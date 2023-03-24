@@ -1,37 +1,21 @@
 class MongoSchemas:
-    def new_user_account():
-        #uuid
-        #first name
-        #last name
-        #email
-        #password
-        #preferences object placeholder
+    def new_user_account(first_name, last_name, email, password):
+        return {
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'password': password
+        }
 
-        ####universal
-        #ip address
-        #timestamp
-        #deleted
-        pass
+    def new_comment(comment, author_uuid):
+        return {
+            'comment': comment,
+            'author_uuid': author_uuid,
+        }
 
-    def new_comment():
-        #comment html/body
-        #author uuid
-        #ip address
-
-        ####universal
-        #ip address
-        #timestamp
-        #deleted
-        pass
-
-    def new_story():
-        #title
-        #body / html
-        #author uuid
-        #ip address
-
-        ####universal
-        #ip address
-        #timestamp
-        #deleted
-        pass
+    def new_story(title, story, author_uuid):
+        return {
+            'title': title,
+            'story': story,
+            'author_uuid': author_uuid,
+        }
