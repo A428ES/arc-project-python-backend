@@ -1,4 +1,8 @@
-from flask import Flask, blueprints
+from flask import Flask
+from db.mongo_controller import MongoController
+from config.config import Config
+
+db = MongoController()
 
 def create_app(config=None):
     app = Flask(__name__)
