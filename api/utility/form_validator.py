@@ -7,7 +7,6 @@ class FormValidator:
     def __init__(self, current_user, json_request, schema_object):
         self.json_req = json_request
         self.schema = schema_object
-        self.user = current_user
         self.json_req["author_uuid"] = current_user["uuid"]
 
         self.minimum_key_match()
