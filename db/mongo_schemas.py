@@ -1,10 +1,10 @@
 class MongoSchemas:
-    def schema_builder(self, value, val_type="string", length=20, regex="standard"):
+    def schema_builder(self, value=None, val_type="string", length=20, regex="standard"):
         return {
-                'value': value,
-                'type': val_type,
-                'length': length,
-                'regex': None
+            'value': value,
+            'type': val_type,
+            'length': length,
+            'regex': None
         }
     
     def new_user_account(self, first_name, last_name, email, password):
@@ -15,10 +15,10 @@ class MongoSchemas:
             'password': self.schema_builder(password, lenght=16, regex="password"),
         }
 
-    def new_comment(self, comment, author_uuid):
+    def new_comment(self):
         return {
-            'comment': self.schema_builder(comment, length=500),
-            'author_uuid': self.schema_builder(author_uuid, regex="uuid"),
+            'comment': self.schema_builder(length=500, val_type="int"),
+            'author_uuid': self.schema_builder(regex="uuid"),
         }
 
     def new_story(self, title, story, author_uuid):
