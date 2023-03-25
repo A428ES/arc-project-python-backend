@@ -1,11 +1,14 @@
 from flask import Flask
+from flask_login import LoginManager
 from db.mongo_controller import MongoController
 from config.config import Config
 
 db = MongoController()
+login_manager = LoginManager()
 
 def create_app(config=None):
     app = Flask(__name__)
+    login_manager.init_app(app)
 
     from api.user.user import user_route
     from api.admin.admin import admin_route
