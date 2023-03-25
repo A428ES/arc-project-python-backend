@@ -1,7 +1,5 @@
 class MongoSchemas:
-    def schema_builder(
-        self, value=None, val_type="string", length=36, regex=None
-    ):
+    def schema_builder(self, value=None, val_type="string", length=36, regex=None):
         return {"value": value, "type": val_type, "length": length, "regex": regex}
 
     def new_user_account(self):

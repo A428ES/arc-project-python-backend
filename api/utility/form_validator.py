@@ -2,6 +2,7 @@ from config.config import Config
 import re
 import html
 
+
 class FormValidator:
     def __init__(self, current_user, json_request, schema_object):
         self.json_req = json_request
@@ -38,22 +39,35 @@ class FormValidator:
             raise Exception("The request object is missing required keys")
 
     def regex_validation(self, entry):
-        if self.schema[entry]['regex'] == None:
+        if self.schema[entry]["regex"] == None:
             return True
-        
-        if re.match(Config.regex_dict[self.schema[entry]['regex']], self.json_req[entry]) is None:
+
+        if (
+            re.match(
+                Config.regex_dict[self.schema[entry]["regex"]], self.json_req[entry]
+            )
+            is None
+        ):
             raise Exception(f"{entry} Does not match required regex")
-        
+
     def final_sanitiation(self, entry):
-        if not isinstance(self.json_req[entry], str): 
+        if not isinstance(self.json_req[entry], str):
             return self.json_req[entry]
-        
-        return html.escape("".join([char for char in self.json_req[entry] if char not in Config.remove_characters]))
+
+        return html.escape(
+            "".join(
+                [
+                    char
+                    for char in self.json_req[entry]
+                    if char not in Config.remove_characters
+                ]
+            )
+        )
 
     def validate_request_field(self, entry):
         self.field_validate_type(entry)
 
-        if self.schema[entry]['type'] == "string":
+        if self.schema[entry]["type"] == "string":
             self.field_validate_length(entry)
             self.field_validate_not_empty(entry)
             self.regex_validation(entry)
