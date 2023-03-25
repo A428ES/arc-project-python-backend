@@ -1,9 +1,10 @@
 class MongoSchemas:
     def schema_builder(self, value, val_type="string", length=20, regex="standard"):
-        return {'value':value,
-                'type':val_type,
-                'length':length,
-                'regex':None
+        return {
+                'value': value,
+                'type': val_type,
+                'length': length,
+                'regex': None
         }
     
     def new_user_account(self, first_name, last_name, email, password):
