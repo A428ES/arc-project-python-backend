@@ -6,6 +6,7 @@ from config.config import Config
 db = MongoController()
 login_manager = LoginManager()
 
+
 def create_app(config=None):
     app = Flask(__name__)
     login_manager.init_app(app)

@@ -1,3 +1,3 @@
 from flask import Blueprint
 
-comment_route = Blueprint('comment', __name__)
+comment_route = Blueprint("comment", __name__)
