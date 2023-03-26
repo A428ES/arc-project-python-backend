@@ -31,7 +31,7 @@ def user_login_view():
 
     if locate_user != None:
         if password == locate_user[0]['password']:
-            login_user(User("abctest@test.com"))
+            login_user(User(locate_user[0]['email']))
 
             return {'results':'logged in'}
 
