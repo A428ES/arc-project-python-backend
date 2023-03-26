@@ -22,3 +22,10 @@ class MongoSchemas:
             "story": self.schema_builder(length=None),
             "author_uuid": self.schema_builder(regex="uuid"),
         }
+    
+    def new_login(self):
+        return {
+            "email": self.schema_builder(length=30, regex="email"),
+            "password": self.schema_builder(length=16, regex="password")
+        }
+
