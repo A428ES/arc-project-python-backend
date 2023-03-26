@@ -30,8 +30,8 @@ def user_login_view():
     locate_user = db.find_record('users', {'email':user})
 
     if locate_user != None:
-        if password == locate_user[0]['password']:
-            login_user(User(locate_user[0]['email']))
+        if password == locate_user['password']:
+            login_user(User(locate_user['email']))
 
             return {'results':'logged in'}
 
