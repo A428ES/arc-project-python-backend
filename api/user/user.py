@@ -13,24 +13,25 @@ def main_user():
 
 @user_route.route("/user/register", methods=['GET'])
 def user_register():
-    new_user = {"first_name": "Sergio",
-                    "last_name":"Estrada", 
-                    "email":"testtest@test.com",
-                    "password":"testtesttest99@"}
+    request_args = {"first_name": request.args.get("firstname"),
+                    "last_name":request.args.get("lastname"), 
+                    "email":request.args.get("email"),
+                    "password":request.args.get("password")}
     
-    new_validation = FormValidator(new_user, db.new_user_account()).validate_form()
+    new_validation = FormValidator(request_args, db.new_user_account()).validate_form()
     
     return db.insert_record("users", new_validation)
 
 @user_route.route("/user/login", methods=['GET'])
 def user_login_view():
-    user = request.args.get("user")
-    password = request.args.get("pass")
-
-    locate_user = db.find_record('users', {'email':user})
+    request_args = {"email":request.args.get("email"),
+                    "password":request.args.get("pass")}
+    
+    processed_request = FormValidator(request_args, db.new_login())
+    locate_user = db.find_record('users', {'email':processed_request['email']})
 
     if locate_user != None:
-        if password == locate_user['password']:
+        if processed_request['password'] == locate_user['password']:
             login_user(User(locate_user['email']))
 
             return {'results':'logged in'}
