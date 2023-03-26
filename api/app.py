@@ -14,7 +14,7 @@ def create_app(config=None):
 
     @login_manager.user_loader 
     def load_user(user_id):
-        return User(user_id)
+        return User().find(user_id)
 
 
     from api.user.user import user_route
