@@ -38,7 +38,7 @@ class FormValidator:
             raise Exception("The request object is missing required keys")
 
     def regex_validation(self, entry):
-        if self.schema[entry]["regex"] == None:
+        if self.schema[entry]["regex"] is None:
             return True
         
         if (
