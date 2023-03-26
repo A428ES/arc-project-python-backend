@@ -2,6 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 from db.mongo_controller import MongoController
 from api.utility.user_login import User
+from flask_cors import CORS
 
 db = MongoController()
 login_manager = LoginManager()
@@ -11,6 +12,8 @@ def create_app(config=None):
     app = Flask(__name__)
     login_manager.init_app(app)
     app.config['SECRET_KEY'] = '93j0fjef0dsfs'
+
+    CORS(app)
 
     @login_manager.user_loader 
     def load_user(user_id):

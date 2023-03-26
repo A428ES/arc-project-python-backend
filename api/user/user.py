@@ -24,7 +24,7 @@ def user_register():
 @user_route.route("/user/login", methods=['GET'])
 def user_login_view():
     request_args = {"email":request.args.get("email"),
-                    "password":request.args.get("pass")}
+                    "password":request.args.get("password")}
     
     processed_request = FormValidator(request_args, db.new_login()).validate_form()
     locate_user = db.find_record('users', {'email':processed_request['email']})
