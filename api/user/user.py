@@ -6,7 +6,6 @@ from api.utility.form_validator import FormValidator
 
 user_route = Blueprint("user", __name__)
 
-
 @user_route.route("/user", methods=["GET"])
 def main_user():
     return {"results": "main user"}
@@ -32,14 +31,13 @@ def user_login_view():
 
     if locate_user != None:
         if processed_request['password'] == locate_user['password']:
-            login_user(User(locate_user['email']))
+            login_user(User().find(locate_user['email']))
 
             return {'results':'logged in'}
 
     return {'results':'invalid login attempt'}
 
 @user_route.route("/user/logout", methods=['GET'])
-@login_required
 def user_logout():
     logout_user()
     return {'results':'logged out'}
