@@ -21,13 +21,16 @@ class MongoController(MongoSchemas):
 
         return db_entry
 
-    def find_record(self, target, query):
+    def find_record(self, target, query, first=True):
         self.set_collection(target)
 
         result = [entry for entry in self.collection.find(query)]
 
-        return result if len(result) > 0 else None
+        if len(result) < 1:
+            return None
 
+        return result[0] if first == True else result
+    
     def insert_record(self, target, db_entry):
         db_entry = self.inject_tracking_requirements(db_entry)
 
