@@ -27,7 +27,7 @@ def user_login_view():
     request_args = {"email":request.args.get("email"),
                     "password":request.args.get("pass")}
     
-    processed_request = FormValidator(request_args, db.new_login())
+    processed_request = FormValidator(request_args, db.new_login()).validate_form()
     locate_user = db.find_record('users', {'email':processed_request['email']})
 
     if locate_user != None:
