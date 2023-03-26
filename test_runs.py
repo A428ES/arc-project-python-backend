@@ -4,7 +4,10 @@ from api.utility.form_validator import FormValidator
 test = {
     "comment": "This will start out as a test comment ... but will slowly attempt to turn >>, <<< >><<< into an XSS attack '''''''"
 }
-current_user = {"uuid": "222f67f2-ca12-4702-adad-47959280756e"}
-new_validation = FormValidator(current_user, test, db.new_comment()).validate_form()
+new_user = {"first_name": "Sergio",
+                "last_name":"Estrada", 
+                "email":"test@test.com",
+                "password":"testtest99@"}
+new_validation = FormValidator(new_user, db.new_user_account()).validate_form()
 
 print(new_validation)
