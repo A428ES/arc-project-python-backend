@@ -4,10 +4,10 @@ import html
 
 
 class FormValidator:
-    def __init__(self, current_user, json_request, schema_object):
+    def __init__(self, json_request, schema_object, current_user = None):
         self.json_req = json_request
         self.schema = schema_object
-        self.json_req["author_uuid"] = current_user["uuid"]
+        #self.json_req["author_uuid"] = current_user["uuid"] if 'author_uuid' in schema_object else None
 
         self.minimum_key_match()
 
@@ -40,7 +40,7 @@ class FormValidator:
     def regex_validation(self, entry):
         if self.schema[entry]["regex"] == None:
             return True
-
+        
         if (
             re.match(
                 Config.regex_dict[self.schema[entry]["regex"]], self.json_req[entry]
