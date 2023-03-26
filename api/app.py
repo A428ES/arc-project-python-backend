@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from db.mongo_controller import MongoController
-from config.config import Config
+from api.utility.user_login import User
 
 db = MongoController()
 login_manager = LoginManager()
@@ -10,6 +10,12 @@ login_manager = LoginManager()
 def create_app(config=None):
     app = Flask(__name__)
     login_manager.init_app(app)
+    app.config['SECRET_KEY'] = '93j0fjef0dsfs'
+
+    @login_manager.user_loader 
+    def load_user(user_id):
+        return User(user_id)
+
 
     from api.user.user import user_route
     from api.admin.admin import admin_route
