@@ -7,7 +7,7 @@ class MongoSchemas:
             "first_name": self.schema_builder(regex="name"),
             "last_name": self.schema_builder(regex="name"),
             "email": self.schema_builder(length=30, regex="email"),
-            "password": self.schema_builder(lenght=16, regex="password"),
+            "password": self.schema_builder(length=16, regex="password"),
         }
 
     def new_comment(self):
