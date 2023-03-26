@@ -1,6 +1,7 @@
 from config.config import Config
 import re
 import html
+from api.app import db 
 
 
 class FormValidator:
@@ -33,6 +34,7 @@ class FormValidator:
 
     def minimum_key_match(self):
         key_match = [key for key in self.schema.keys() if key in self.json_req.keys()]
+        key_match.append('collection')
 
         if len(key_match) != len(self.schema.keys()):
             raise Exception("The request object is missing required keys")
@@ -62,6 +64,10 @@ class FormValidator:
                 ]
             )
         )
+    
+    def enforce_unique_entry(self, entry):
+        if db.find_record(self.schema['collection'], {entry:self.json_req[entry]}) != None and self.schema[entry]['unique'] == True:
+            raise Exception(f"{entry} already has a match in the collection")
 
     def validate_request_field(self, entry):
         self.field_validate_type(entry)
@@ -72,6 +78,8 @@ class FormValidator:
             self.regex_validation(entry)
 
         self.json_req[entry] = self.final_sanitiation(entry)
+
+        self.enforce_unique_entry(entry)
 
     def validate_form(self):
         for item in self.json_req.keys():
