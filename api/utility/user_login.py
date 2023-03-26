@@ -8,7 +8,7 @@ class User(UserMixin, MongoController):
     def find(self, user_id):
         self.db = MongoController()
 
-        user = self.db.find_record("users", {'email':user_id})[0]
+        user = self.db.find_record("users", {'email':user_id})
 
         self.id = user['email']
         self.password = user['password']
