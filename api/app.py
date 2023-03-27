@@ -1,24 +1,23 @@
 from flask import Flask
-from flask_login import LoginManager
 from db.mongo_controller import MongoController
 from api.utility.user_login import User
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 db = MongoController()
-login_manager = LoginManager()
-
 
 def create_app(config=None):
     app = Flask(__name__)
-    login_manager.init_app(app)
     app.config['SECRET_KEY'] = '93j0fjef0dsfs'
+    app.config["JWT_SECRET_KEY"] = "93j0fjef0dsfs-secret" 
+    jwt = JWTManager(app)
 
     CORS(app)
-
-    @login_manager.user_loader 
-    def load_user(user_id):
-        return User().find(user_id)
-
+   
+    @jwt.user_lookup_loader
+    def user_lookup_callback(_jwt_header, jwt_data):
+        print(jwt_data)
+        return db.find_record("users", {'email':jwt_data['sub']}) 
 
     from api.user.user import user_route
     from api.admin.admin import admin_route
