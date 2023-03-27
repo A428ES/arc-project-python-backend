@@ -1,22 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
-import React, { useEffect, useState } from "react"
+import "./App.css";
+import React, { useEffect, useState } from "react";
+import "../src/user/login";
+import UserLogin from "../src/user/login";
+import UserLoggedIn from "../src/user/loggedin";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 
 function App() {
-  const [users, setUsers] = useState([])
-
-  let testVar = () => fetch('http://localhost:5000/user/login?email=sergio.estrada@accenture.com&password=testtest99@', {
-    method: 'GET',
-  }).then(response => {
-        return response.json()
-      })
-      .then(data => {
-        setUsers(data)
-      })
-    
-    testVar()
-
-  return (<>{users.results}</>
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<UserLogin />} />
+        <Route path="/loggedin" element={<UserLoggedIn />} />
+      </Routes>
+    </Router>
   );
 }
 
