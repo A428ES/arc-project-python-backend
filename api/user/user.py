@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_login import login_user, login_required, logout_user
+from flask_jwt_extended import jwt_required, create_access_token
 from api.utility.user_login import User
 from api.app import db
 from api.utility.form_validator import FormValidator
@@ -31,18 +31,17 @@ def user_login_view():
 
     if locate_user != None:
         if processed_request['password'] == locate_user['password']:
-            login_user(User().find(locate_user['email']))
+            access_token = create_access_token(identity=locate_user['email'])
 
-            return {'results':'logged in'}
+            return {'results':access_token}
 
     return {'results':'invalid login attempt'}
 
 @user_route.route("/user/logout", methods=['GET'])
 def user_logout():
-    logout_user()
     return {'results':'logged out'}
 
 @user_route.route("/user/check_logged_in", methods=['GET'])
-@login_required
+@jwt_required()
 def check_logged_in():
     return {'results':'logged in'}
