@@ -1,20 +1,34 @@
 body {
   margin: 0;
+  background-color: gainsboro;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .topnav {
+  text-align: center;
+  margin: auto;
+  width: 75%;
   overflow: hidden;
   background-color: #333;
 }
 
+
+.login {
+  text-align: center;
+  margin: auto;
+  width: 75%;
+  overflow: hidden;
+  background-color: cadetblue;
+}
+
+
 .topnav a {
-  float: left;
+  min-height: auto;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
+  padding: 24px 40px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 24px;
 }
 
 .topnav a:hover {
@@ -36,4 +50,14 @@ body {
 .loginError {
   color: crimson;
   font-weight: bold;
+}
+
+.content{
+  padding: 24px;
+  margin: auto;
+  width: 75%;
+  min-height: 500px;
+  color: black;
+  font-size: 18px;
+  text-align:center;
 }
