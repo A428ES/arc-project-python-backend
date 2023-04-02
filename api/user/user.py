@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required, create_access_token
+from flask_jwt_extended import jwt_required, create_access_token, current_user
 from api.utility.user_login import User
 from api.app import db
 from api.utility.form_validator import FormValidator
@@ -33,10 +33,6 @@ def user_register():
 
 @user_route.route("/user/login", methods=["GET"])
 def user_login_view():
-    print("test")
-    print("test")
-    print("test")
-    print("test")
     request_args = {
         "email": request.args.get("email"),
         "password": request.args.get("password"),
@@ -51,7 +47,9 @@ def user_login_view():
         if processed_request["password"] == locate_user["password"]:
             access_token = create_access_token(identity=locate_user["email"])
 
-            return {"results": access_token}
+            return {
+                "results": {"access": access_token, "user_data": locate_user["email"]}
+            }
 
     raise Exception("invalid login attempt")
 
@@ -64,4 +62,4 @@ def user_logout():
 @user_route.route("/user/check_logged_in", methods=["GET"])
 @jwt_required()
 def check_logged_in():
-    return {"results": "logged in"}
+    return {"results": current_user["email"]}
