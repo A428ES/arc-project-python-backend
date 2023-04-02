@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { AuthContext } from "../context/user_context";
+import { useContext } from "react";
 export default function UserLogin() {
-  const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [dataReq, setData] = useState([]);
-  const [loggedIn, setLoggedIn] = useState([]);
+  const [errorMsg, setError] = useState([""]);
   const [userName, setUser] = useState([]);
   const [passWord, setPass] = useState([]);
-  const navigate = useNavigate();
+  const [authState, setAuthState] = useContext(AuthContext);
+
+  let errorOccured = false;
 
   let loginRequest = () => {
-    console.log(userName);
     fetch(
       "http://localhost:5000/user/login?email=" +
         userName +
@@ -20,21 +21,23 @@ export default function UserLogin() {
       { method: "GET" }
     )
       .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Something went wrong ...");
+        if (!response.ok) {
+          errorOccured = true;
         }
+
+        return response.json();
       })
       .then((data) => {
-        setIsLoaded(true);
-        setData(data);
+        if (errorOccured == false) {
+          setIsLoaded(true);
+          setData(data.data);
 
-        localStorage.setItem("user_token", data.results);
-        console.log(data.results);
-        navigate("/loggedin");
-      })
-      .catch((error) => setData({ results: "error" }));
+          localStorage.setItem("user_token", data.results);
+          setAuthState({ userLoggedIn: true, username: userName });
+        } else {
+          setError(data.error);
+        }
+      });
   };
 
   let handleSubmit = (event) => {
@@ -43,26 +46,28 @@ export default function UserLogin() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Email Address:{" "}
-        <input
-          type="text"
-          name="email"
-          onChange={(e) => setUser(e.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Password:{" "}
-        <input
-          type="password"
-          name="password"
-          onChange={(e) => setPass(e.target.value)}
-        />
-      </label>
-      <br />
-      <input value="Login" type="submit" />
-    </form>
+    <>
+      <div class="loginError">{errorMsg}</div>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Email:{" "}
+          <input
+            type="text"
+            name="email"
+            onChange={(e) => setUser(e.target.value)}
+          />
+        </label>
+
+        <label>
+          Password:{" "}
+          <input
+            type="password"
+            name="password"
+            onChange={(e) => setPass(e.target.value)}
+          />
+        </label>
+        <input value="Login" type="submit" />
+      </form>
+    </>
   );
 }
