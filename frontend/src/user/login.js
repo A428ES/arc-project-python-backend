@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/user_context";
 import { useContext } from "react";
 export default function UserLogin() {
+  const navigate = useNavigate();
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [dataReq, setData] = useState([]);
   const [errorMsg, setError] = useState([""]);
@@ -32,8 +34,12 @@ export default function UserLogin() {
           setIsLoaded(true);
           setData(data.data);
 
-          localStorage.setItem("user_token", data.results);
-          setAuthState({ userLoggedIn: true, username: userName });
+          localStorage.setItem("user_token", data.results.access);
+          setAuthState({
+            userLoggedIn: true,
+            userData: data.results.user_data,
+          });
+          navigate("/");
         } else {
           setError(data.error);
         }
@@ -46,7 +52,7 @@ export default function UserLogin() {
   };
 
   return (
-    <>
+    <div class="content">
       <div class="loginError">{errorMsg}</div>
       <form onSubmit={handleSubmit}>
         <label>
@@ -68,6 +74,6 @@ export default function UserLogin() {
         </label>
         <input value="Login" type="submit" />
       </form>
-    </>
+    </div>
   );
 }
