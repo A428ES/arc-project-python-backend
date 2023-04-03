@@ -12,10 +12,16 @@ export default function Content(prop) {
 
   return (
     <>
-      {authState.userLoggedIn === true ? (
-        <div class="content">Thanks for logging in homie</div>
+      <header class="articleHeader" id="p1">
+        Main Story Page
+      </header>
+      {authState.userLoggedIn == true ? (
+        <p>
+          Thanks for logging in {authState.userData}! This page is still in
+          progress
+        </p>
       ) : (
-        <div class="content">You gotta login homie</div>
+        <p>You need to login </p>
       )}
     </>
   );

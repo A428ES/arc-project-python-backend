@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/user_context";
+import { AuthContext } from "../../context/user_context";
 import { useContext } from "react";
 export default function UserLogin() {
   const navigate = useNavigate();
@@ -52,28 +52,41 @@ export default function UserLogin() {
   };
 
   return (
-    <div class="content">
-      <div class="loginError">{errorMsg}</div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email:{" "}
-          <input
-            type="text"
-            name="email"
-            onChange={(e) => setUser(e.target.value)}
-          />
-        </label>
+    <>
+      {authState.userLoggedIn === true ? (
+        navigate("/")
+      ) : (
+        <>
+          <header class="articleHeader" id="p1">
+            Login
+          </header>
+          <p>
+            <div class="content">
+              <div class="loginError">{errorMsg}</div>
+              <form onSubmit={handleSubmit}>
+                <label>
+                  Email:{" "}
+                  <input
+                    type="text"
+                    name="email"
+                    onChange={(e) => setUser(e.target.value)}
+                  />
+                </label>
 
-        <label>
-          Password:{" "}
-          <input
-            type="password"
-            name="password"
-            onChange={(e) => setPass(e.target.value)}
-          />
-        </label>
-        <input value="Login" type="submit" />
-      </form>
-    </div>
+                <label>
+                  Password:{" "}
+                  <input
+                    type="password"
+                    name="password"
+                    onChange={(e) => setPass(e.target.value)}
+                  />
+                </label>
+                <input value="Login" type="submit" />
+              </form>
+            </div>
+          </p>
+        </>
+      )}
+    </>
   );
 }
