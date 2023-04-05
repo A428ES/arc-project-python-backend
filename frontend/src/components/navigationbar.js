@@ -15,21 +15,37 @@ export default function NavigationBar() {
       <header id="banner">Story Publishing Website</header>
       {authState.userLoggedIn === true ? (
         <div id="navigation">
-          <a href="/">Main Page</a>
-          <a href="addsubmission">Submit Story</a>
-          <a href="mysubmissions">My Submissions</a>
-          <a href="mycomments">My Comments</a>
-          <a href="mysettings">My Settings</a>
-          <a href="" onClick={() => handleLogout()}>
+          <a className="nav" href="/">
+            Main Page
+          </a>
+          <a className="nav" href="addsubmission">
+            Submit Story
+          </a>
+          <a className="nav" href="mysubmissions">
+            My Submissions
+          </a>
+          <a className="nav" href="mycomments">
+            My Comments
+          </a>
+          <a className="nav" href="mysettings">
+            My Settings
+          </a>
+          <a className="nav" href="" onClick={() => handleLogout()}>
             Logout
           </a>
         </div>
       ) : (
         <>
           <div id="navigation">
-            <a href="/">Main Page</a>
-            <a href="/register">Register</a>
-            <a href="/login">Login</a>
+            <a className="nav" href="/">
+              Main Page
+            </a>
+            <a className="nav" href="/register">
+              Register
+            </a>
+            <a className="nav" href="/login">
+              Login
+            </a>
           </div>
         </>
       )}

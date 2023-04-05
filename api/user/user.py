@@ -9,6 +9,7 @@ user_route = Blueprint("user", __name__)
 
 @user_route.errorhandler(Exception)
 def handle_general_exception(e):
+    raise
     return {"error": str(e)}, 400
 
 
@@ -17,18 +18,25 @@ def main_user():
     return {"results": "main user"}
 
 
-@user_route.route("/user/register", methods=["GET"])
+@user_route.route("/user/register", methods=["POST"])
 def user_register():
+    req = request.get_json()
+
     request_args = {
-        "first_name": request.args.get("firstname"),
-        "last_name": request.args.get("lastname"),
-        "email": request.args.get("email"),
-        "password": request.args.get("password"),
+        "first_name": req["firstname"],
+        "last_name": req["lastname"],
+        "email": req["email"],
+        "password": req["password"],
     }
 
     new_validation = FormValidator(request_args, db.new_user_account()).validate_form()
 
-    return db.insert_record("users", new_validation)
+    find_insert = db.insert_record("users", new_validation)
+
+    if find_insert != None:
+        return {"results": "true"}
+
+    raise Exception("An unknown error occured during registration")
 
 
 @user_route.route("/user/login", methods=["GET"])
@@ -62,4 +70,11 @@ def user_logout():
 @user_route.route("/user/check_logged_in", methods=["GET"])
 @jwt_required()
 def check_logged_in():
-    return {"results": current_user["email"]}
+    return {
+        "results": {
+            "email": current_user["email"],
+            "firstname": current_user["first_name"],
+            "lastname": current_user["last_name"],
+            "created": current_user["created_timestamp_ms"],
+        }
+    }

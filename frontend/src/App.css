@@ -359,6 +359,7 @@ body{
 	background-color: #FFFAC4;
 	margin: 8px;
 	display: block;
+  word-wrap: break-word;
 }
 
 label{
@@ -391,28 +392,58 @@ p{
 	margin: 0px;
 	padding: 10px;
 }
+content{
+  background-color: #FFFAC4;
+	margin: 0px;
+	padding: 10px;
+
+}
 
 a:link, a:visited{
-	color: white;
+	color: yellow;
 	text-align: center;
 	padding: 14px 16px;
 	text-decoration: none;
 }
 
 a:hover {
+	color: crimson;
+}
+
+a.nav:link, a.nav:visited{
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+a.nav:hover {
 	color: #313131;
 	background-color: #FFFAC4;
 }
 
+
 .articleHeader{
+	background-color: #252525;
+	font-size: 16px;
+	color: #FCFCFD;
+	padding: 5px;
+}
+
+.contentHeader{
 	background-color: #252525;
 	font-size: 24px;
 	color: #FCFCFD;
 	padding: 5px;
 }
 
+
 .funParagraph{
 	color: green;
+}
+
+.article{
+  background-color: #FFFAC4;
 }
 
 #mainHeading{

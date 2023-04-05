@@ -16,7 +16,8 @@ class MongoController(MongoSchemas):
     def inject_tracking_requirements(self, db_entry):
         db_entry["uuid"] = str(uuid.uuid4())
         db_entry["ip_address"] = "127.0.0.1"
-        db_entry["timestamp_ms"] = datetime.now().timestamp()
+        db_entry["created_timestamp_ms"] = datetime.now().timestamp()
+        db_entry["modified_timestamp_ms"] = datetime.now().timestamp()
         db_entry["is_deleted"] = False
 
         return db_entry
@@ -30,7 +31,7 @@ class MongoController(MongoSchemas):
             return None
 
         return result[0] if first == True else result
-    
+
     def insert_record(self, target, db_entry):
         db_entry = self.inject_tracking_requirements(db_entry)
 
@@ -51,3 +52,35 @@ class MongoController(MongoSchemas):
         self.collection.replace_one(db_entry)
 
         return self.find_record({"uuid": db_entry["uuid"]})
+
+    def get_story_for_frontend(self, story):
+        self.set_collection("stories")
+
+        author = self.find_record("users", {"uuid": story["author_uuid"]})
+
+        if author != None:
+            return {
+                "uuid": story["uuid"],
+                "title": story["title"],
+                "story": story["story"],
+                "author": f"{author['first_name']} {author['last_name']}",
+                "date": datetime.fromtimestamp(story["created_timestamp_ms"]).strftime(
+                    "%m/%d/%Y"
+                ),
+            }
+
+        else:
+            return {}
+
+    def get_comments_for_story(self, comment):
+        if len(comment) > 0:
+            author = self.find_record("users", {"uuid": comment["author_uuid"]})
+            return {
+                "author": f"{author['first_name']} {author['last_name']}",
+                "date": datetime.fromtimestamp(
+                    comment["created_timestamp_ms"]
+                ).strftime("%m/%d/%Y %I:%M %p"),
+                "content": comment["comment"],
+            }
+        else:
+            return {}
