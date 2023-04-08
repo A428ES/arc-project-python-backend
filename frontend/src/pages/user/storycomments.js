@@ -1,54 +1,55 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/user_context";
 import AddComment from "./add_comment";
+import HTTPRequester from "../../utility/requester";
 
 export default function CommentsOnStory(prop) {
   const [authState, setAuthState] = useContext(AuthContext);
   const [submissions, setSubmissions] = useState(0);
-
-  const getComments = () => {
-    fetch("http://localhost:5000/comments/display?id=" + prop.storyID, {
-      method: "GET",
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        setSubmissions(data);
-      });
-  };
+  const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
 
   useEffect(() => {
-    getComments();
-    prop.setNew(false);
-  }, [prop.newComment]);
+    if (dataFeed === null || prop.newComment === true) {
+      getData(prop.viewType, "POST", {
+        story_id: prop.storyID,
+      });
+      prop.setNew(false);
+    } else {
+      setSubmissions(dataFeed);
+    }
+  }, [dataFeed, prop.newComment]);
+
+  let postCommentView = () => {
+    if (prop.viewType !== "comments/mycomments") {
+      if (authState.userLoggedIn === true) {
+        return <AddComment storyID={prop.storyID} setNew={prop.setNew} />;
+      } else {
+        return "Please log in to comment.";
+      }
+    }
+  };
 
   return (
     <>
       <p>
         <section>
-          {submissions.results
-            ? submissions.results.map((item) => (
-                <>
-                  <section>
-                    {" "}
-                    <header className="articleHeader" id="p1">
-                      {item.author} said the following on {item.date}
-                    </header>
-                    <p class="article">{item.content}</p>
-                  </section>
-                </>
-              ))
-            : "No comments to view"}
-
-          {authState.userLoggedIn === true ? (
-            <AddComment storyID={prop.storyID} setNew={prop.setNew} />
+          {submissions.results ? (
+            submissions.results.map((item) => (
+              <>
+                <section>
+                  {" "}
+                  <header className="articleHeader" id="p1">
+                    {item.author} said the following on {item.date}
+                  </header>
+                  <p class="article">{item.content}</p>
+                </section>
+              </>
+            ))
           ) : (
-            <>Log in to comment</>
+            <p class="article">No comments to view</p>
           )}
+
+          {postCommentView()}
         </section>
       </p>
     </>

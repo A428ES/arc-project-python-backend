@@ -37,6 +37,7 @@ export default function CommentBar(prop) {
             </a>
           </header>
           <CommentsOnStory
+            viewType="comments/display"
             storyID={prop.storyID}
             setNew={setNewComment}
             newComment={newComment}

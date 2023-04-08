@@ -1,12 +1,15 @@
 import React from "react";
+import CommentsOnStory from "./storycomments";
 
 export default function MyComments() {
   return (
     <>
-      <header class="articleHeader" id="p1">
-        My Comments
-      </header>
-      <p>Your comments go here</p>
+      <CommentsOnStory
+        viewType="comments/mycomments"
+        storyID={null}
+        setNew={() => {}}
+        newComment={null}
+      />
     </>
   );
 }

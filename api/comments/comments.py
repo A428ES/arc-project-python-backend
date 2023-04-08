@@ -8,7 +8,6 @@ comment_route = Blueprint("comment", __name__)
 
 @comment_route.errorhandler(Exception)
 def handle_general_exception(e):
-    raise
     return {"error": str(e)}, 400
 
 
@@ -24,10 +23,23 @@ def get_comments_for_story():
     return {"results": len(comments)}
 
 
-@comment_route.route("/comments/display", methods=["GET"])
+@comment_route.route("/comments/display", methods=["POST"])
 def diplay_comments_for_story():
     comments = db.find_record(
-        "comments", {"story_uuid": request.args.get("id")}, first=False
+        "comments", {"story_uuid": request.get_json()["story_id"]}, first=False
+    )
+
+    if comments == None:
+        return {"results": {"No comments to display"}}
+
+    return {"results": [db.get_comments_for_story(comment) for comment in comments]}
+
+
+@comment_route.route("/comments/mycomments", methods=["POST"])
+@jwt_required()
+def display_user_comments():
+    comments = db.find_record(
+        "comments", {"author_uuid": current_user["uuid"]}, first=False
     )
 
     if comments == None:
