@@ -24,14 +24,14 @@ export default function CommentBar(prop) {
   return (
     <>
       {viewingComment === false ? (
-        <header className="articleHeader" id="p1">
+        <header className="articleHeader" id="p2">
           <a href="#" onClick={() => movePage()}>
             comments ({commentTotal})
           </a>
         </header>
       ) : (
         <>
-          <header className="articleHeader" id="p1">
+          <header className="articleHeader" id="p2">
             <a href="#" onClick={() => setView(false)}>
               Close {commentTotal} comments
             </a>

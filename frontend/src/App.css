@@ -353,54 +353,36 @@
 
 /* Create three equal columns that floats next to each other */
 body{
+  width: 80%;
 	font-family: Tahoma;
 	font-size: 14px;
-	color: #313131;
-	background-color: #FFFAC4;
-	margin: 8px;
+	background-color: #e5f1ed;
+	margin: auto;
 	display: block;
   word-wrap: break-word;
-}
-
-label{
-  padding: 10px;
 }
 
 main{
 	max-width:960px;
 	margin: auto;
-	background-color: #FFFAC4;
+	background-color: #cfe8ef;
 }
 
 section{
-	width: 95%;
+	width: 90%;
 	margin: auto;
 	padding: 10px;
 }
 
-img{
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	height: 20%;
-	width: 30%;
-	border: 2px solid black;
-}
-
 p{
-	background-color: #FBFBFB;
+	background-color: #cfe8ef;
 	margin: 0px;
 	padding: 10px;
-}
-content{
-  background-color: #FFFAC4;
-	margin: 0px;
-	padding: 10px;
-
+  border:#252525
 }
 
 a:link, a:visited{
-	color: yellow;
+	color: #063970;
 	text-align: center;
 	padding: 14px 16px;
 	text-decoration: none;
@@ -424,9 +406,9 @@ a.nav:hover {
 
 
 .articleHeader{
-	background-color: #252525;
+	background-color: #e5f1ed;
 	font-size: 16px;
-	color: #FCFCFD;
+	color: black;
 	padding: 5px;
 }
 
@@ -437,24 +419,8 @@ a.nav:hover {
 	padding: 5px;
 }
 
-
-.funParagraph{
-	color: green;
-}
-
-.article{
-  background-color: #FFFAC4;
-}
-
-#mainHeading{
-	background-color: #252525;
-	font-size: 24px;
-	color: red;
-	padding: 5px;
-}
-
 #banner{
-	background-color: #FFFAC4;
+	background-color: #cfe8ef;
 	color: #313030;
 	font-size: 28px;
 	font-family: Trebuchet MS;
@@ -464,11 +430,8 @@ a.nav:hover {
 #closer, #navigation{
 	background-color: #792222;
 	color: #FCFCFD;
+  padding: 14px;
 	text-align: center;
-}
-
-#closer, #navigation, #banner{
-	padding: 14px;
 }
 
 @media screen and (max-width: 780px) {

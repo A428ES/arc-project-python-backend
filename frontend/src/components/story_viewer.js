@@ -20,7 +20,7 @@ export default function StoryViewer(prop) {
       <header className="articleHeader" id="p1">
         Story Feed
       </header>
-      <p>
+      <section>
         {submissions && submissions.results
           ? submissions.results.map((item) => (
               <>
@@ -35,7 +35,7 @@ export default function StoryViewer(prop) {
               </>
             ))
           : "No results"}
-      </p>
+      </section>
     </>
   );
 }
