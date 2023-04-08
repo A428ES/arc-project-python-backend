@@ -1,5 +1,6 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import HTTPRequester from "../../utility/requester";
 
 export default function RegisterAccount() {
   const [firstName, setFirstName] = useState([]);
@@ -9,7 +10,15 @@ export default function RegisterAccount() {
   const [email, setEmail] = useState([]);
   const [confirmEmail, setConfirmEmail] = useState([]);
   const [proceessFeed, setFeed] = useState([""]);
-  let errorOccured = false;
+  const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
+
+  useEffect(() => {
+    if (dataFeed !== null && errorFeed === null) {
+      setFeed(<>Your registration was successful!</>);
+    } else if (errorFeed !== null) {
+      setFeed(errorFeed);
+    }
+  }, [dataFeed]);
 
   let handleSubmit = (event) => {
     loginRequest();
@@ -37,25 +46,7 @@ export default function RegisterAccount() {
         lastname: lastName,
       };
 
-      fetch("http://localhost:5000/user/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            errorOccured = true;
-          }
-
-          return response.json();
-        })
-        .then((data) => {
-          if (errorOccured === false && data.results === "true") {
-            setFeed(<>Your registration was successful!</>);
-          } else {
-            setFeed(data.error);
-          }
-        });
+      getData("user/register", "POST", requestBody);
     }
   };
 

@@ -29,8 +29,7 @@ def diplay_comments_for_story():
     comments = db.find_record(
         "comments", {"story_uuid": request.args.get("id")}, first=False
     )
-    print("get ready for it")
-    print(comments)
+
     if comments == None:
         return {"results": {"No comments to display"}}
 

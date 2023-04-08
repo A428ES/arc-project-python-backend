@@ -1,46 +1,26 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "../../context/user_context";
+import React, { useState, useEffect } from "react";
+import HTTPRequester from "../../utility/requester";
 
 export default function AddSubmission() {
   const [storyContent, setStory] = useState([]);
   const [storyTitle, setTitle] = useState([]);
   const [proceessFeed, setFeed] = useState([""]);
-  const [authState, setAuthState] = useContext(AuthContext);
+  const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
 
-  let errorOccured = false;
+  useEffect(() => {
+    if (dataFeed !== null && errorFeed === null) {
+      setFeed(<>Your story was submitted successful!</>);
+    } else if (errorFeed !== null) {
+      setFeed(errorFeed);
+    }
+  }, [dataFeed]);
 
   let handleSubmit = (event) => {
-    submitStory();
-    event.preventDefault();
-  };
-
-  let submitStory = () => {
-    let requestBody = {
+    getData("stories/submit", "POST", {
       title: storyTitle,
       story: storyContent,
-    };
-    fetch("http://localhost:5000/stories/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("user_token"),
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          errorOccured = true;
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        if (errorOccured === false && data.results === "true") {
-          setFeed(<>Your story was submitted successful!</>);
-        } else {
-          setFeed(data.error);
-        }
-      });
+    });
+    event.preventDefault();
   };
 
   return (

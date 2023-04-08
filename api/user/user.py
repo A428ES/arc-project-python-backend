@@ -9,7 +9,6 @@ user_route = Blueprint("user", __name__)
 
 @user_route.errorhandler(Exception)
 def handle_general_exception(e):
-    raise
     return {"error": str(e)}, 400
 
 

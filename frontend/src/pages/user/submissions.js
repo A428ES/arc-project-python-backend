@@ -1,30 +1,19 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import CommentBar from "../../components/comment_bar";
+import HTTPRequester from "../../utility/requester";
 
 export default function MySubmissions() {
   const [submissions, setSubmissions] = useState("Loading stories...");
-  const getSubmissions = () => {
-    fetch("http://localhost:5000/stories/mystories", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("user_token"),
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        setSubmissions(data);
-      });
-  };
+  const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
 
   useEffect(() => {
-    getSubmissions();
-  }, []);
-
+    if (dataFeed === null) {
+      getData("stories/mystories", "GET");
+    } else {
+      setSubmissions(dataFeed);
+    }
+  }, [dataFeed]);
   return (
     <>
       <header className="articleHeader" id="p1">

@@ -12,7 +12,7 @@ def handle_general_exception(e):
     return {"error": str(e)}, 400
 
 
-@stories_route.route("/", methods=["GET"])
+@stories_route.route("/", methods=["POST"])
 def main_page():
     print("here")
     story_results = [

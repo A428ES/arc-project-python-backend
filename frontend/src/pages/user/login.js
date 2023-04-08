@@ -1,53 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/user_context";
 import { useContext } from "react";
+import HTTPRequester from "../../utility/requester";
 export default function UserLogin() {
   const navigate = useNavigate();
-
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [dataReq, setData] = useState([]);
-  const [errorMsg, setError] = useState([""]);
   const [userName, setUser] = useState([]);
   const [passWord, setPass] = useState([]);
   const [authState, setAuthState] = useContext(AuthContext);
+  const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
 
-  let errorOccured = false;
-
-  let loginRequest = () => {
-    fetch(
-      "http://localhost:5000/user/login?email=" +
-        userName +
-        "&password=" +
-        passWord,
-      { method: "GET" }
-    )
-      .then((response) => {
-        if (!response.ok) {
-          errorOccured = true;
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        if (errorOccured == false) {
-          setIsLoaded(true);
-          setData(data.data);
-
-          localStorage.setItem("user_token", data.results.access);
-          setAuthState({
-            userLoggedIn: true,
-            userData: data.results.user_data,
-          });
-          navigate("/");
-        } else {
-          setError(data.error);
-        }
+  useEffect(() => {
+    if (dataFeed !== null) {
+      localStorage.setItem("user_token", dataFeed.results.access);
+      setAuthState({
+        userLoggedIn: true,
+        userData: dataFeed.results.user_data,
       });
-  };
+
+      navigate("/");
+    }
+  }, [dataFeed]);
 
   let handleSubmit = (event) => {
-    loginRequest();
+    getData(`user/login?email=${userName}&password=${passWord}`, "GET");
     event.preventDefault();
   };
 
@@ -62,7 +38,7 @@ export default function UserLogin() {
           </header>
           <p>
             <div class="content">
-              <div class="loginError">{errorMsg}</div>
+              <div class="loginError">{errorFeed}</div>
               <form onSubmit={handleSubmit}>
                 <label>
                   Email:{" "}

@@ -1,26 +1,19 @@
 import React, { useEffect } from "react";
-import { AuthContext } from "../context/user_context";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import CommentBar from "../components/comment_bar";
+import HTTPRequester from "../utility/requester";
 
 export default function Content(prop) {
   const [submissions, setSubmissions] = useState("Loading stories...");
-
-  const getSubmissions = () => {
-    fetch("http://localhost:5000/", { method: "GET" })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        setSubmissions(data);
-      });
-  };
+  const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
 
   useEffect(() => {
-    getSubmissions();
-  }, []);
+    if (dataFeed === null) {
+      getData();
+    } else {
+      setSubmissions(dataFeed);
+    }
+  }, [dataFeed]);
 
   return (
     <>
@@ -28,7 +21,7 @@ export default function Content(prop) {
         Story Feed
       </header>
       <p>
-        {submissions.results
+        {submissions && submissions.results
           ? submissions.results.map((item) => (
               <>
                 <section>

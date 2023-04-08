@@ -13,34 +13,25 @@ import AddComment from "./pages/user/add_comment";
 import AddSubmission from "./pages/user/add_submission";
 import RegisterAccount from "./pages/user/register";
 import CommentsOnStory from "./pages/user/storycomments";
+import HTTPRequester from "./utility/requester";
 
 function App() {
   const [authState, setAuthState] = useContext(AuthContext);
+  const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem("user_token");
-
-    if (loggedInUser) {
-      let lookUpUser = () => {
-        fetch("http://localhost:5000//user/check_logged_in", {
-          headers: { Authorization: "Bearer " + loggedInUser },
-          method: "GET",
-        })
-          .then((response) => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              localStorage.clear();
-            }
-          })
-          .then((data) => {
-            setAuthState({ userLoggedIn: true, userData: data.results });
-          });
-      };
-
-      lookUpUser();
+    if (errorFeed !== null) {
+      localStorage.clear();
     }
-  }, []);
+
+    if (dataFeed !== null && errorFeed === null) {
+      setAuthState({ userLoggedIn: true, userData: dataFeed.results });
+    } else {
+      if (localStorage.getItem("user_token")) {
+        getData("/user/check_logged_in", "GET");
+      }
+    }
+  }, [dataFeed, errorFeed]);
 
   return (
     <>
@@ -56,7 +47,6 @@ function App() {
               path="/addsubmission"
               element={
                 <Protected isLoggedIn={authState.userLoggedIn}>
-                    
                   <AddSubmission />
                 </Protected>
               }
@@ -65,7 +55,6 @@ function App() {
               path="/addcomment"
               element={
                 <Protected isLoggedIn={authState.userLoggedIn}>
-                    
                   <AddComment />
                 </Protected>
               }
@@ -75,7 +64,6 @@ function App() {
               path="/mysettings"
               element={
                 <Protected isLoggedIn={authState.userLoggedIn}>
-                    
                   <MySettings />
                 </Protected>
               }
@@ -84,7 +72,6 @@ function App() {
               path="/mysubmissions"
               element={
                 <Protected isLoggedIn={authState.userLoggedIn}>
-                    
                   <MySubmissions />
                 </Protected>
               }
