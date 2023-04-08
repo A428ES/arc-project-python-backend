@@ -12,7 +12,7 @@ export default function NavigationBar() {
 
   return (
     <>
-      <header id="banner">Story Publishing Website</header>
+      <header id="banner">Untitled Project</header>
       {authState.userLoggedIn === true ? (
         <div id="navigation">
           <a className="nav" href="/">

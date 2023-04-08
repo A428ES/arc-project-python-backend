@@ -36,55 +36,57 @@ function App() {
     <>
       <NavigationBar />
       <article>
-        <Router>
-          <Routes>
-            <Route path="/" element={<StoryViewer author="/" />} />
-            <Route path="/login" element={<UserLogin />} />
-            <Route path="/viewcomments" element={<CommentsOnStory />} />
-            <Route path="/register" element={<RegisterAccount />}></Route>
-            <Route
-              path="/addsubmission"
-              element={
-                <Protected isLoggedIn={authState.userLoggedIn}>
-                  <AddSubmission />
-                </Protected>
-              }
-            />
-            <Route
-              path="/addcomment"
-              element={
-                <Protected isLoggedIn={authState.userLoggedIn}>
-                  <AddComment />
-                </Protected>
-              }
-            />
+        <p class="content">
+          <Router>
+            <Routes>
+              <Route path="/" element={<StoryViewer author="/" />} />
+              <Route path="/login" element={<UserLogin />} />
+              <Route path="/viewcomments" element={<CommentsOnStory />} />
+              <Route path="/register" element={<RegisterAccount />}></Route>
+              <Route
+                path="/addsubmission"
+                element={
+                  <Protected isLoggedIn={authState.userLoggedIn}>
+                    <AddSubmission />
+                  </Protected>
+                }
+              />
+              <Route
+                path="/addcomment"
+                element={
+                  <Protected isLoggedIn={authState.userLoggedIn}>
+                    <AddComment />
+                  </Protected>
+                }
+              />
 
-            <Route
-              path="/mysettings"
-              element={
-                <Protected isLoggedIn={authState.userLoggedIn}>
-                  <MySettings />
-                </Protected>
-              }
-            />
-            <Route
-              path="/mysubmissions"
-              element={
-                <Protected isLoggedIn={authState.userLoggedIn}>
-                  <StoryViewer author="stories/mystories" />
-                </Protected>
-              }
-            />
-            <Route
-              path="/mycomments"
-              element={
-                <Protected isLoggedIn={authState.userLoggedIn}>
-                  <MyComments />
-                </Protected>
-              }
-            />
-          </Routes>
-        </Router>
+              <Route
+                path="/mysettings"
+                element={
+                  <Protected isLoggedIn={authState.userLoggedIn}>
+                    <MySettings />
+                  </Protected>
+                }
+              />
+              <Route
+                path="/mysubmissions"
+                element={
+                  <Protected isLoggedIn={authState.userLoggedIn}>
+                    <StoryViewer author="stories/mystories" />
+                  </Protected>
+                }
+              />
+              <Route
+                path="/mycomments"
+                element={
+                  <Protected isLoggedIn={authState.userLoggedIn}>
+                    <MyComments />
+                  </Protected>
+                }
+              />
+            </Routes>
+          </Router>{" "}
+        </p>
       </article>
     </>
   );

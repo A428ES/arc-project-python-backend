@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import CommentBar from "../components/comment_bar";
 import HTTPRequester from "../utility/requester";
+import PageTitle from "./page_title";
 
 export default function StoryViewer(prop) {
   const [submissions, setSubmissions] = useState("Loading stories...");
@@ -17,9 +18,7 @@ export default function StoryViewer(prop) {
 
   return (
     <>
-      <header className="articleHeader" id="p1">
-        Story Feed
-      </header>
+      <PageTitle text="Viewing Stories" />
       <section>
         {submissions && submissions.results
           ? submissions.results.map((item) => (

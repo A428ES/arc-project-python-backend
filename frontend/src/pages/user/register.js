@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import HTTPRequester from "../../utility/requester";
+import PageTitle from "../../components/page_title";
 
 export default function RegisterAccount() {
   const [firstName, setFirstName] = useState([]);
@@ -52,70 +53,66 @@ export default function RegisterAccount() {
 
   return (
     <>
-      <header className="articleHeader" id="p1">
-        Register New Account
-      </header>
-      <p>
-        <div className="content">
-          <div className="loginError">{proceessFeed}</div>
-          <form onSubmit={handleSubmit}>
-            <label>
-              First Name:{" "}
-              <input
-                type="text"
-                name="firstname"
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-            </label>
+      <PageTitle text="Register New Account" />
+      <div className="content">
+        <div className="loginError">{proceessFeed}</div>
+        <form onSubmit={handleSubmit}>
+          <label>
+            First Name:{" "}
+            <input
+              type="text"
+              name="firstname"
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+          </label>
 
-            <label>
-              Last Name:{" "}
-              <input
-                type="text"
-                name="lastname"
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </label>
-            <br />
-            <label>
-              Email:{" "}
-              <input
-                type="email"
-                name="email"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
+          <label>
+            Last Name:{" "}
+            <input
+              type="text"
+              name="lastname"
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </label>
+          <br />
+          <label>
+            Email:{" "}
+            <input
+              type="email"
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </label>
 
-            <label>
-              Confirm Email:{" "}
-              <input
-                type="email"
-                name="confirm_email"
-                onChange={(e) => setConfirmEmail(e.target.value)}
-              />
-            </label>
-            <br />
-            <label>
-              Password:{" "}
-              <input
-                type="password"
-                name="password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </label>
+          <label>
+            Confirm Email:{" "}
+            <input
+              type="email"
+              name="confirm_email"
+              onChange={(e) => setConfirmEmail(e.target.value)}
+            />
+          </label>
+          <br />
+          <label>
+            Password:{" "}
+            <input
+              type="password"
+              name="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
 
-            <label>
-              Confirm Password:{" "}
-              <input
-                type="password"
-                name="confirm_password"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </label>
-            <input value="Register" type="submit" />
-          </form>
-        </div>
-      </p>
+          <label>
+            Confirm Password:{" "}
+            <input
+              type="password"
+              name="confirm_password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </label>
+          <input value="Register" type="submit" />
+        </form>
+      </div>
     </>
   );
 }

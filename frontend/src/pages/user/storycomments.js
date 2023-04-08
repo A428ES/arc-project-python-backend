@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/user_context";
 import AddComment from "./add_comment";
 import HTTPRequester from "../../utility/requester";
+import PageTitle from "../../components/page_title";
 
 export default function CommentsOnStory(prop) {
   const [authState, setAuthState] = useContext(AuthContext);
@@ -31,27 +32,25 @@ export default function CommentsOnStory(prop) {
 
   return (
     <>
-      <p>
-        <section>
-          {submissions.results ? (
-            submissions.results.map((item) => (
-              <>
-                <section>
-                  {" "}
-                  <header className="articleHeader" id="p1">
-                    {item.author} said the following on {item.date}
-                  </header>
-                  <p class="article">{item.content}</p>
-                </section>
-              </>
-            ))
-          ) : (
-            <p class="article">No comments to view</p>
-          )}
+      <section>
+        {submissions.results ? (
+          submissions.results.map((item) => (
+            <>
+              <section>
+                {" "}
+                <header className="articleHeader" id="p1">
+                  {item.author} said the following on {item.date}
+                </header>
+                <p class="article">{item.content}</p>
+              </section>
+            </>
+          ))
+        ) : (
+          <p class="article">No comments to view</p>
+        )}
 
-          {postCommentView()}
-        </section>
-      </p>
+        {postCommentView()}
+      </section>
     </>
   );
 }

@@ -27,25 +27,20 @@ export default function AddComment(prop) {
 
   return (
     <>
-      <header class="articleHeader" id="p1">
-        Add Comment
-      </header>
-      <p>
-        <div class="content">
-          <div class="loginError">{outComeFeed}</div>
-          <form onSubmit={handleSubmit}>
-            <textarea
-              value={commentData}
-              name="comment"
-              rows="10"
-              cols="70"
-              onChange={(e) => setComment(e.target.value)}
-            />
-            <br />
-            <input value="Submit Comment" type="submit" />
-          </form>
-        </div>
-      </p>
+      <div class="content">
+        <div class="loginError">{outComeFeed}</div>
+        <form onSubmit={handleSubmit}>
+          <textarea
+            value={commentData}
+            name="comment"
+            rows="10"
+            cols="70"
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <br />
+          <input value="Submit Comment" type="submit" />
+        </form>
+      </div>
     </>
   );
 }

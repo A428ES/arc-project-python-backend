@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/user_context";
 import { useContext } from "react";
 import HTTPRequester from "../../utility/requester";
+import PageTitle from "../../components/page_title";
+
 export default function UserLogin() {
   const navigate = useNavigate();
   const [userName, setUser] = useState([]);
@@ -33,34 +35,30 @@ export default function UserLogin() {
         navigate("/")
       ) : (
         <>
-          <header class="articleHeader" id="p1">
-            Login
-          </header>
-          <p>
-            <div class="content">
-              <div class="loginError">{errorFeed}</div>
-              <form onSubmit={handleSubmit}>
-                <label>
-                  Email:{" "}
-                  <input
-                    type="text"
-                    name="email"
-                    onChange={(e) => setUser(e.target.value)}
-                  />
-                </label>
+          <PageTitle text="Login" />
+          <div class="content">
+            <div class="loginError">{errorFeed}</div>
+            <form onSubmit={handleSubmit}>
+              <label>
+                Email:{" "}
+                <input
+                  type="text"
+                  name="email"
+                  onChange={(e) => setUser(e.target.value)}
+                />
+              </label>
 
-                <label>
-                  Password:{" "}
-                  <input
-                    type="password"
-                    name="password"
-                    onChange={(e) => setPass(e.target.value)}
-                  />
-                </label>
-                <input value="Login" type="submit" />
-              </form>
-            </div>
-          </p>
+              <label>
+                Password:{" "}
+                <input
+                  type="password"
+                  name="password"
+                  onChange={(e) => setPass(e.target.value)}
+                />
+              </label>
+              <input value="Login" type="submit" />
+            </form>
+          </div>
         </>
       )}
     </>

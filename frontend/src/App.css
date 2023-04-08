@@ -353,10 +353,10 @@
 
 /* Create three equal columns that floats next to each other */
 body{
-  width: 80%;
+  width: 65%;
 	font-family: Tahoma;
-	font-size: 14px;
-	background-color: #e5f1ed;
+	font-size: 16px;
+	background-color: #262525;
 	margin: auto;
 	display: block;
   word-wrap: break-word;
@@ -369,14 +369,21 @@ main{
 }
 
 section{
-	width: 90%;
+	width: 95%;
 	margin: auto;
 	padding: 10px;
 }
 
+.content{
+  background-color: white;
+	margin: auto;
+	padding: 10px;
+  border:#252525
+}
+
 p{
-	background-color: #cfe8ef;
-	margin: 0px;
+	background-color: #fff8e3;
+	margin: auto;
 	padding: 10px;
   border:#252525
 }
@@ -393,7 +400,7 @@ a:hover {
 }
 
 a.nav:link, a.nav:visited{
-	color: white;
+	color: #252525;
 	text-align: center;
 	padding: 14px 16px;
 	text-decoration: none;
@@ -406,30 +413,36 @@ a.nav:hover {
 
 
 .articleHeader{
-	background-color: #e5f1ed;
+	background-color: #e6e8e3;
 	font-size: 16px;
 	color: black;
 	padding: 5px;
 }
 
-.contentHeader{
-	background-color: #252525;
-	font-size: 24px;
-	color: #FCFCFD;
-	padding: 5px;
-}
-
 #banner{
-	background-color: #cfe8ef;
+	background-color: #FFFAC4;
 	color: #313030;
-	font-size: 28px;
+	font-size: 40px;
 	font-family: Trebuchet MS;
 	text-align: center;
+  padding: 18px;
+}
+
+
+#navbanner{
+	background-color: #FFFAC4;
+	color: #313030;
+	font-size: 22px;
+	font-family: Trebuchet MS;
+	text-align: center;
+  padding: 10px;
+  margin:14px;
+  letter-spacing: 5px;
 }
 
 #closer, #navigation{
-	background-color: #792222;
-	color: #FCFCFD;
+	background-color: whitesmoke;
+	color: #252525;
   padding: 14px;
 	text-align: center;
 }
