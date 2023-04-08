@@ -2,12 +2,10 @@ import "./App.css";
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavigationBar from "./components/navigationbar";
-import Content from "./pages/content";
 import UserLogin from "./pages/user/login";
 import { AuthContext } from "./context/user_context";
 import Protected from "./components/protected";
 import MySettings from "./pages/user/settings";
-import MySubmissions from "./pages/user/submissions";
 import MyComments from "./pages/user/comments";
 import AddComment from "./pages/user/add_comment";
 import AddSubmission from "./pages/user/add_submission";
@@ -39,7 +37,7 @@ function App() {
       <article>
         <Router>
           <Routes>
-            <Route path="/" element={<Content />} />
+            <Route path="/" element={<StoryViewer author="/" />} />
             <Route path="/login" element={<UserLogin />} />
             <Route path="/viewcomments" element={<CommentsOnStory />} />
             <Route path="/register" element={<RegisterAccount />}></Route>
@@ -72,7 +70,7 @@ function App() {
               path="/mysubmissions"
               element={
                 <Protected isLoggedIn={authState.userLoggedIn}>
-                  <MySubmissions />
+                  <StoryViewer author="stories/mystories" />
                 </Protected>
               }
             />
