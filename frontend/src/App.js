@@ -12,6 +12,7 @@ import AddSubmission from "./pages/user/add_submission";
 import RegisterAccount from "./pages/user/register";
 import CommentsOnStory from "./pages/user/storycomments";
 import HTTPRequester from "./utility/requester";
+import StoryViewer from "./components/story_viewer";
 
 function App() {
   const [authState, setAuthState] = useContext(AuthContext);

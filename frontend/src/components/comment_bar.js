@@ -1,33 +1,21 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/user_context";
-import AddComment from "../pages/user/add_comment";
 import CommentsOnStory from "../pages/user/storycomments";
+import HTTPRequester from "../utility/requester";
 
 export default function CommentBar(prop) {
-  const [authState, setAuthState] = useContext(AuthContext);
   const [commentTotal, setCommentTotal] = useState(0);
   const [viewingComment, setView] = useState(false);
   const [newComment, setNewComment] = useState();
-  const navigate = useNavigate();
-
-  const getComments = () => {
-    fetch("http://localhost:5000/comments/count?id=" + prop.storyID, {
-      method: "GET",
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((data) => {
-        setCommentTotal(data.results);
-      });
-  };
+  const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
 
   useEffect(() => {
-    getComments();
-  }, [newComment]);
+    if (dataFeed === null || newComment === true) {
+      getData(`comments/count?id=${prop.storyID}`, "GET");
+      setNewComment(false);
+    } else {
+      setCommentTotal(dataFeed.results);
+    }
+  }, [dataFeed, newComment]);
 
   let movePage = () => {
     setView(true);

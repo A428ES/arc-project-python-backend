@@ -1,48 +1,28 @@
 import React from "react";
-import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../../context/user_context";
+import { useState, useEffect } from "react";
+import HTTPRequester from "../../utility/requester";
 
 export default function AddComment(prop) {
   const [outComeFeed, setFeed] = useState([""]);
   const [commentData, setComment] = useState("");
-  const [authState, setAuthState] = useContext(AuthContext);
+  const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
 
-  let errorOccured = false;
+  useEffect(() => {
+    if (dataFeed !== null && errorFeed === null) {
+      prop.setNew(true);
+      setFeed(<>Your comment was submitted successful!</>);
+      setComment("");
+    } else if (errorFeed !== null) {
+      setFeed(errorFeed);
+    }
+  }, [dataFeed]);
 
   let handleSubmit = (event) => {
-    submitComment();
-    event.preventDefault();
-  };
-
-  let submitComment = () => {
-    let requestBody = {
+    getData("comments/submit", "POST", {
       comment: commentData,
       story: prop.storyID,
-    };
-    fetch("http://localhost:5000/comments/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("user_token"),
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          errorOccured = true;
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        if (errorOccured === false && data.results === "true") {
-          prop.setNew(true);
-          setComment("");
-          setFeed(<>Your comment was submitted successful!</>);
-        } else {
-          setFeed(data.error);
-        }
-      });
+    });
+    event.preventDefault();
   };
 
   return (
