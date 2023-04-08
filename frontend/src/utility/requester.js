@@ -8,7 +8,7 @@ export default function HTTPRequester() {
   const submitRequest = (
     path = "",
     req_method = "POST",
-    arg_body = null,
+    arg_body = {},
     arg_headers = null
   ) => {
     let request_structure = {

@@ -14,7 +14,6 @@ def handle_general_exception(e):
 
 @stories_route.route("/", methods=["POST"])
 def main_page():
-    print("here")
     story_results = [
         db.get_story_for_frontend(story)
         for story in db.find_record("stories", {}, first=False)
@@ -50,7 +49,7 @@ def submit_story():
     raise Exception("An unknown error occured during story submission")
 
 
-@stories_route.route("/stories/mystories", methods=["GET"])
+@stories_route.route("/stories/mystories", methods=["POST"])
 @jwt_required()
 def my_stories():
     stories = db.find_record(
