@@ -8,6 +8,7 @@ comment_route = Blueprint("comment", __name__)
 
 @comment_route.errorhandler(Exception)
 def handle_general_exception(e):
+    raise
     return {"error": str(e)}, 400
 
 
@@ -30,7 +31,7 @@ def diplay_comments_for_story():
     )
 
     if comments == None:
-        return {"results": {"No comments to display"}}
+        return {"results": "none"}
 
     return {"results": [db.get_comments_for_story(comment) for comment in comments]}
 
@@ -67,3 +68,19 @@ def add_comment():
         return {"results": "true"}
 
     raise Exception("An unknown error occured during story submission")
+
+
+@comment_route.route("/comments/delete", methods=["POST"])
+@jwt_required()
+def delete_comment():
+    req = request.get_json()["uuid"]
+
+    comment = db.find_record("comments", {"uuid": req})
+
+    print(req)
+    if comment["author_uuid"] == current_user["uuid"]:
+        db.update_record("comments", {"uuid": req}, delete_record=True)
+
+        return {"results": "success"}
+
+    return {"error": "invalid"}

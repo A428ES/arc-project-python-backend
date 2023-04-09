@@ -25,6 +25,7 @@ class MongoController(MongoSchemas):
     def find_record(self, target, query, first=True):
         self.set_collection(target)
 
+        query.update({"is_deleted": False})
         result = [entry for entry in self.collection.find(query)]
 
         if len(result) < 1:
@@ -43,15 +44,15 @@ class MongoController(MongoSchemas):
     def update_record(self, target, db_entry, delete_record=False):
         self.set_collection(target)
 
-        if self.find_record({"uuid": db_entry["uuid"]}) == None:
+        if self.find_record(target, {"uuid": db_entry["uuid"]}) == None:
             return None
 
         if delete_record == True:
             db_entry["is_deleted"] = True
 
-        self.collection.replace_one(db_entry)
+        self.collection.replace_one({"uuid": db_entry["uuid"]}, db_entry)
 
-        return self.find_record({"uuid": db_entry["uuid"]})
+        return self.find_record(target, {"uuid": db_entry["uuid"]})
 
     def get_story_for_frontend(self, story):
         self.set_collection("stories")
@@ -81,6 +82,8 @@ class MongoController(MongoSchemas):
                     comment["created_timestamp_ms"]
                 ).strftime("%m/%d/%Y %I:%M %p"),
                 "content": comment["comment"],
+                "comment_uuid": comment["uuid"],
+                "author_uuid": author["uuid"],
             }
         else:
             return {}

@@ -48,7 +48,7 @@ def user_login_view():
     processed_request = FormValidator(request_args, db.new_login()).validate_form()
 
     locate_user = db.find_record("users", {"email": processed_request["email"]})
-    print("test")
+
     print(locate_user)
     if locate_user != None:
         if processed_request["password"] == locate_user["password"]:
@@ -75,5 +75,6 @@ def check_logged_in():
             "firstname": current_user["first_name"],
             "lastname": current_user["last_name"],
             "created": current_user["created_timestamp_ms"],
+            "uuid": current_user["uuid"],
         }
     }

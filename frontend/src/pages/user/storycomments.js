@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/user_context";
 import AddComment from "./add_comment";
 import HTTPRequester from "../../utility/requester";
-import PageTitle from "../../components/page_title";
+import CommentOptonsBar from "../../components/comment_options_bar";
 
 export default function CommentsOnStory(prop) {
   const [authState, setAuthState] = useContext(AuthContext);
@@ -33,7 +33,7 @@ export default function CommentsOnStory(prop) {
   return (
     <>
       <section>
-        {submissions.results ? (
+        {submissions.results && submissions.results !== "none" ? (
           submissions.results.map((item) => (
             <>
               <section>
@@ -42,6 +42,15 @@ export default function CommentsOnStory(prop) {
                   {item.author} said the following on {item.date}
                 </header>
                 <p class="article">{item.content}</p>
+                {authState.userData &&
+                authState.userData["uuid"] === item.author_uuid ? (
+                  <CommentOptonsBar
+                    setNew={prop.setNew}
+                    commentUUID={item.comment_uuid}
+                  />
+                ) : (
+                  ""
+                )}
               </section>
             </>
           ))

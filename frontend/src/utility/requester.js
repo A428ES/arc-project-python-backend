@@ -16,13 +16,11 @@ export default function HTTPRequester() {
     };
 
     if (arg_headers == null) {
-      alert("here");
       request_structure.headers = {
         "Content-Type": "application/json",
       };
 
       if (localStorage.getItem("user_token")) {
-        alert("adding headers");
         request_structure.headers.Authorization =
           "Bearer " + localStorage.getItem("user_token");
       }

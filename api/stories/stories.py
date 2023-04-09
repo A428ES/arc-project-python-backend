@@ -19,8 +19,8 @@ def main_page():
         for story in db.find_record("stories", {}, first=False)
     ]
 
-    print("here")
     story_results = [story for story in story_results if len(story) > 0]
+    story_results.reverse()
 
     if len(story_results) < 1:
         results = "No stories to show"

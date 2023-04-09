@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import CommentsOnStory from "../pages/user/storycomments";
 import HTTPRequester from "../utility/requester";
+import { AuthContext } from "../context/user_context";
 
 export default function CommentBar(prop) {
+  const [authState, setAuthState] = useContext(AuthContext);
   const [commentTotal, setCommentTotal] = useState(0);
   const [viewingComment, setView] = useState(false);
   const [newComment, setNewComment] = useState();
@@ -25,14 +27,14 @@ export default function CommentBar(prop) {
     <>
       {viewingComment === false ? (
         <header className="articleHeader" id="p2">
-          <a href="#" onClick={() => movePage()}>
+          <a href="javascript:void(0)" onClick={() => movePage()}>
             comments ({commentTotal})
           </a>
         </header>
       ) : (
         <>
           <header className="articleHeader" id="p2">
-            <a href="#" onClick={() => setView(false)}>
+            <a href="javascript:void(0)" onClick={() => setView(false)}>
               Close {commentTotal} comments
             </a>
           </header>
@@ -41,6 +43,9 @@ export default function CommentBar(prop) {
             storyID={prop.storyID}
             setNew={setNewComment}
             newComment={newComment}
+            authorUUID={
+              authState.userData ? authState.userData.uuid : undefined
+            }
           />
         </>
       )}
