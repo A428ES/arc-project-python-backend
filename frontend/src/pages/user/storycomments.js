@@ -45,8 +45,10 @@ export default function CommentsOnStory(prop) {
                 {authState.userData &&
                 authState.userData["uuid"] === item.author_uuid ? (
                   <CommentOptonsBar
+                    key={item.comment_uuid}
                     setNew={prop.setNew}
                     commentUUID={item.comment_uuid}
+                    newComment={prop.newComment}
                   />
                 ) : (
                   ""

@@ -17,7 +17,7 @@ export default function UserLogin() {
       localStorage.setItem("user_token", dataFeed.results.access);
       setAuthState({
         userLoggedIn: true,
-        userData: dataFeed.results.user_data,
+        userData: dataFeed.results,
       });
 
       navigate("/");

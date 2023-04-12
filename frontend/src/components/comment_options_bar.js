@@ -14,6 +14,10 @@ export default function CommentOptonsBar(prop) {
   const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
   const [deleteCommentView, delCommentUpdate] = useState(deleteView);
 
+  let handleDelete = () => {
+    getData("comments/delete", "POST", { uuid: prop.commentUUID });
+  };
+
   useEffect(() => {
     if (dataFeed !== null && errorFeed === null) {
       prop.setNew(true);
@@ -22,10 +26,6 @@ export default function CommentOptonsBar(prop) {
       setFeed(errorFeed);
     }
   }, [dataFeed]);
-
-  let handleDelete = () => {
-    getData("comments/delete", "POST", { uuid: prop.commentUUID });
-  };
 
   let handleSubmit = () => {
     delCommentUpdate(

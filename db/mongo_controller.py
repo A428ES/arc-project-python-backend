@@ -43,14 +43,15 @@ class MongoController(MongoSchemas):
 
     def update_record(self, target, db_entry, delete_record=False):
         self.set_collection(target)
+        find_rec = self.find_record(target, {"uuid": db_entry["uuid"]})
 
-        if self.find_record(target, {"uuid": db_entry["uuid"]}) == None:
+        if find_rec == None:
             return None
 
         if delete_record == True:
-            db_entry["is_deleted"] = True
+            find_rec["is_deleted"] = True
 
-        self.collection.replace_one({"uuid": db_entry["uuid"]}, db_entry)
+        self.collection.replace_one({"uuid": db_entry["uuid"]}, find_rec)
 
         return self.find_record(target, {"uuid": db_entry["uuid"]})
 

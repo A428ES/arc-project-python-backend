@@ -397,6 +397,7 @@ a:link, a:visited{
 
 a:hover {
 	color: crimson;
+  letter-spacing: 2px;
 }
 
 a.nav:link, a.nav:visited{
@@ -409,6 +410,7 @@ a.nav:link, a.nav:visited{
 a.nav:hover {
 	color: #313131;
 	background-color: #FFFAC4;
+  letter-spacing: 5px;
 }
 
 
@@ -446,6 +448,11 @@ a.nav:hover {
   padding: 14px;
 	text-align: center;
 }
+
+input{
+  margin: 5px;
+}
+
 
 @media screen and (max-width: 780px) {
 	a:link {

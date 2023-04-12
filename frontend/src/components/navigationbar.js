@@ -13,30 +13,31 @@ export default function NavigationBar() {
   return (
     <>
       <header id="banner">Untitled Project</header>
-      {authState.userLoggedIn === true ? (
-        <div id="navigation">
-          <a className="nav" href="/">
-            Main Page
-          </a>
-          <a className="nav" href="addsubmission">
-            Submit Story
-          </a>
-          <a className="nav" href="mysubmissions">
-            My Submissions
-          </a>
-          <a className="nav" href="mycomments">
-            My Comments
-          </a>
-          <a className="nav" href="mysettings">
-            My Settings
-          </a>
-          <a className="nav" href="" onClick={() => handleLogout()}>
-            Logout
-          </a>
-        </div>
-      ) : (
-        <>
-          <div id="navigation">
+      <div id="navigation">
+        {authState.userLoggedIn === true ? (
+          <>
+            <a className="nav" href="/">
+              Main Page
+            </a>
+            <a className="nav" href="addsubmission">
+              Submit Story
+            </a>
+            <a className="nav" href="mysubmissions">
+              My Submissions
+            </a>
+            <a className="nav" href="mycomments">
+              My Comments
+            </a>
+            <a className="nav" href="mysettings">
+              My Settings
+            </a>
+            <a className="nav" href="" onClick={() => handleLogout()}>
+              Logout
+            </a>
+          </>
+        ) : (
+          <>
+            {" "}
             <a className="nav" href="/">
               Main Page
             </a>
@@ -46,9 +47,13 @@ export default function NavigationBar() {
             <a className="nav" href="/login">
               Login
             </a>
-          </div>
-        </>
-      )}
+          </>
+        )}
+        <br />
+        <br />
+        <input type="text" size="30" className="searchbar" />
+        <input type="submit" value="Search" />
+      </div>
     </>
   );
 }

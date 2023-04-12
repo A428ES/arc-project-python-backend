@@ -55,7 +55,14 @@ def user_login_view():
             access_token = create_access_token(identity=locate_user["email"])
 
             return {
-                "results": {"access": access_token, "user_data": locate_user["email"]}
+                "results": {
+                    "access": access_token,
+                    "email": locate_user["email"],
+                    "firstname": locate_user["first_name"],
+                    "lastname": locate_user["last_name"],
+                    "created": locate_user["created_timestamp_ms"],
+                    "uuid": locate_user["uuid"],
+                }
             }
 
     raise Exception("invalid login attempt")

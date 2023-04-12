@@ -77,10 +77,12 @@ def delete_comment():
 
     comment = db.find_record("comments", {"uuid": req})
 
-    print(req)
+    if comment == None:
+        raise ("deleted")
+
     if comment["author_uuid"] == current_user["uuid"]:
         db.update_record("comments", {"uuid": req}, delete_record=True)
 
-        return {"results": "success"}
+        return {"results": comment["uuid"]}
 
     return {"error": "invalid"}

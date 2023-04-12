@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import HTTPRequester from "../../utility/requester";
 import PageTitle from "../../components/page_title";
+import TextareaAutosize from "react-textarea-autosize";
 
 export default function AddSubmission() {
   const [storyContent, setStory] = useState([]);
@@ -43,13 +44,21 @@ export default function AddSubmission() {
         <label>
           Content
           <br />
-          <textarea
+          <TextareaAutosize
+            minRows={15}
+            maxRows={25}
+            cols={60}
+            minCols="20"
+            autoFocus
+          />
+          {/* <textarea
+            style="overflow: hidden;"
             name="story_content"
             lol
             cols="100"
             rows="20"
             onChange={(e) => setStory(e.target.value)}
-          ></textarea>
+          ></textarea> */}
         </label>
         <br />
         <input value="Submit Story" type="submit" />
