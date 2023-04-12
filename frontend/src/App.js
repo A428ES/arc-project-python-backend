@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavigationBar from "./components/navigationbar";
 import UserLogin from "./pages/user/login";
@@ -17,29 +17,36 @@ import StoryViewer from "./components/story_viewer";
 function App() {
   const [authState, setAuthState] = useContext(AuthContext);
   const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
+  const [processingLoad, setLoading] = useState(true);
 
   useEffect(() => {
     if (errorFeed !== null) {
       localStorage.clear();
+      setLoading(false);
     }
 
     if (dataFeed !== null && errorFeed === null) {
       setAuthState({ userLoggedIn: true, userData: dataFeed.results });
+      setLoading(false);
     } else {
       if (localStorage.getItem("user_token")) {
         getData("/user/check_logged_in", "GET");
+      } else {
+        setLoading(false);
       }
     }
   }, [dataFeed, errorFeed]);
 
   return (
     <>
+    {processingLoad === false ? 
+    <>
       <NavigationBar />
       <article>
         <p class="content">
           <Router>
             <Routes>
-              <Route path="/" element={<StoryViewer author="/" />} />
+              <Route path="/" element={<StoryViewer author="" />} />
               <Route path="/login" element={<UserLogin />} />
               <Route path="/viewcomments" element={<CommentsOnStory />} />
               <Route path="/register" element={<RegisterAccount />}></Route>
@@ -88,6 +95,7 @@ function App() {
           </Router>{" "}
         </p>
       </article>
+      </> : "" }
     </>
   );
 }
