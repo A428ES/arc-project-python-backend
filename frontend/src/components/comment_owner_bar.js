@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import HTTPRequester from "../utility/requester";
 
-export default function CommentOptonsBar(prop) {
+export default function CommentOwnerBar(prop) {
   let deleteView = (
     <header className="articleHeader" id="p1">
       <a href="javascript:void(0)" onClick={() => handleSubmit()}>

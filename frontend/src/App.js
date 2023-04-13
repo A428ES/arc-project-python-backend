@@ -10,7 +10,7 @@ import MyComments from "./pages/user/comments";
 import AddComment from "./pages/user/add_comment";
 import AddSubmission from "./pages/user/add_submission";
 import RegisterAccount from "./pages/user/register";
-import CommentsOnStory from "./pages/user/storycomments";
+import CommentDisplay from "./components/comment_display";
 import HTTPRequester from "./utility/requester";
 import StoryViewer from "./components/story_viewer";
 
@@ -48,7 +48,7 @@ function App() {
             <Routes>
               <Route path="/" element={<StoryViewer author="" />} />
               <Route path="/login" element={<UserLogin />} />
-              <Route path="/viewcomments" element={<CommentsOnStory />} />
+              <Route path="/viewcomments" element={<CommentDisplay />} />
               <Route path="/register" element={<RegisterAccount />}></Route>
               <Route
                 path="/addsubmission"

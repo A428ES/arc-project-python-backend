@@ -1,9 +1,9 @@
 import { useEffect, useState, useContext } from "react";
-import CommentsOnStory from "../pages/user/storycomments";
+import CommentDisplay from "./comment_display";
 import HTTPRequester from "../utility/requester";
 import { AuthContext } from "../context/user_context";
 
-export default function CommentBar(prop) {
+export default function CommentDropDown(prop) {
   const [authState, setAuthState] = useContext(AuthContext);
   const [commentTotal, setCommentTotal] = useState(0);
   const [viewingComment, setView] = useState(false);
@@ -38,7 +38,7 @@ export default function CommentBar(prop) {
               Close {commentTotal} comments
             </a>
           </header>
-          <CommentsOnStory
+          <CommentDisplay
             viewType="comments/display"
             storyID={prop.storyID}
             setNew={setNewComment}

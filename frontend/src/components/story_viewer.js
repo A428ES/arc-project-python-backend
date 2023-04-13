@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import CommentBar from "../components/comment_bar";
+import CommentDropDown from "./comment_drop_down";
 import HTTPRequester from "../utility/requester";
 import PageTitle from "./page_title";
 
@@ -29,7 +29,7 @@ export default function StoryViewer(prop) {
                     {item.title} by {item.author} on {item.date}
                   </header>
                   <p class="article">{item.story}</p>
-                  <CommentBar storyID={item.uuid} />
+                  <CommentDropDown storyID={item.uuid} />
                 </section>
               </>
             ))

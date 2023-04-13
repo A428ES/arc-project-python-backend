@@ -1,10 +1,10 @@
 import { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../../context/user_context";
-import AddComment from "./add_comment";
-import HTTPRequester from "../../utility/requester";
-import CommentOptonsBar from "../../components/comment_options_bar";
+import { AuthContext } from "../context/user_context";
+import AddComment from "../pages/user/add_comment";
+import HTTPRequester from "../utility/requester";
+import CommentOwnerBar from "./comment_owner_bar";
 
-export default function CommentsOnStory(prop) {
+export default function CommentDisplay(prop) {
   const [authState, setAuthState] = useContext(AuthContext);
   const [submissions, setSubmissions] = useState(0);
   const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
@@ -44,7 +44,7 @@ export default function CommentsOnStory(prop) {
                 <p class="article">{item.content}</p>
                 {authState.userData &&
                 authState.userData["uuid"] === item.author_uuid ? (
-                  <CommentOptonsBar
+                  <CommentOwnerBar
                     key={item.comment_uuid}
                     setNew={prop.setNew}
                     commentUUID={item.comment_uuid}
