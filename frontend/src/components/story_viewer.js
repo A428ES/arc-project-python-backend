@@ -3,6 +3,7 @@ import { useState } from "react";
 import CommentDropDown from "./comment_drop_down";
 import HTTPRequester from "../utility/requester";
 import PageTitle from "./page_title";
+import ReactHtmlParser from "react-html-parser";
 
 export default function StoryViewer(prop) {
   const [submissions, setSubmissions] = useState("Loading stories...");
@@ -26,9 +27,11 @@ export default function StoryViewer(prop) {
                 <section>
                   {" "}
                   <header className="articleHeader" id="p1">
-                    {item.title} by {item.author} on {item.date}
+                    <b>{item.title}</b> by {item.author} on {item.date}
                   </header>
-                  <p class="article">{item.story}</p>
+                  <p class="article">
+                    <div>{ReactHtmlParser(item.story)}</div>
+                  </p>
                   <CommentDropDown storyID={item.uuid} />
                 </section>
               </>

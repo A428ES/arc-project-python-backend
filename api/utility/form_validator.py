@@ -1,14 +1,14 @@
 from config.config import Config
 import re
 import html
-from api.app import db 
+from api.app import db
 
 
 class FormValidator:
-    def __init__(self, json_request, schema_object, current_user = None):
+    def __init__(self, json_request, schema_object, current_user=None):
         self.json_req = json_request
         self.schema = schema_object
-        #self.json_req["author_uuid"] = current_user["uuid"] if 'author_uuid' in schema_object else None
+        # self.json_req["author_uuid"] = current_user["uuid"] if 'author_uuid' in schema_object else None
 
         self.minimum_key_match()
 
@@ -34,7 +34,7 @@ class FormValidator:
 
     def minimum_key_match(self):
         key_match = [key for key in self.schema.keys() if key in self.json_req.keys()]
-        key_match.append('collection')
+        key_match.append("collection")
 
         if len(key_match) != len(self.schema.keys()):
             raise Exception("The request object is missing required keys")
@@ -42,7 +42,7 @@ class FormValidator:
     def regex_validation(self, entry):
         if self.schema[entry]["regex"] is None:
             return True
-        
+
         if (
             re.match(
                 Config.regex_dict[self.schema[entry]["regex"]], self.json_req[entry]
@@ -55,18 +55,14 @@ class FormValidator:
         if not isinstance(self.json_req[entry], str):
             return self.json_req[entry]
 
-        return html.escape(
-            "".join(
-                [
-                    char
-                    for char in self.json_req[entry]
-                    if char not in Config.remove_characters
-                ]
-            )
-        )
-    
+        return self.json_req[entry]
+
     def enforce_unique_entry(self, entry):
-        if db.find_record(self.schema['collection'], {entry:self.json_req[entry]}) != None and self.schema[entry]['unique'] == True:
+        if (
+            db.find_record(self.schema["collection"], {entry: self.json_req[entry]})
+            != None
+            and self.schema[entry]["unique"] == True
+        ):
             raise Exception(f"{entry} already has a match in the collection")
 
     def validate_request_field(self, entry):

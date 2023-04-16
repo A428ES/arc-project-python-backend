@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
 import HTTPRequester from "../../utility/requester";
 import PageTitle from "../../components/page_title";
-import TextareaAutosize from "react-textarea-autosize";
+import { EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 export default function AddSubmission() {
   const [storyContent, setStory] = useState([]);
   const [storyTitle, setTitle] = useState([]);
   const [proceessFeed, setFeed] = useState([""]);
   const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const onChange = (newState) => {
+    setEditorState(newState);
+    setStory(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+  };
 
   useEffect(() => {
     if (dataFeed !== null && errorFeed === null) {
@@ -29,40 +39,34 @@ export default function AddSubmission() {
     <>
       <PageTitle text="Submit New Story" />
       <div className="loginError">{proceessFeed}</div>{" "}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Title
+      <section>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Title
+            <br />
+            <input
+              type="text"
+              name="title"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </label>
           <br />
-          <input
-            type="text"
-            name="title"
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </label>
-        <br />
-        <br />
-        <label>
-          Content
           <br />
-          <TextareaAutosize
-            minRows={15}
-            maxRows={25}
-            cols={60}
-            minCols="20"
-            autoFocus
-          />
-          {/* <textarea
-            style="overflow: hidden;"
-            name="story_content"
-            lol
-            cols="100"
-            rows="20"
-            onChange={(e) => setStory(e.target.value)}
-          ></textarea> */}
-        </label>
-        <br />
-        <input value="Submit Story" type="submit" />
-      </form>
+          <label>
+            Content
+            <br />
+            <Editor
+              editorState={editorState}
+              toolbarClassName="toolbarClassName"
+              wrapperClassName="wrapperClassName"
+              editorClassName="editorClassName"
+              onEditorStateChange={onChange}
+            />
+          </label>
+          <br />
+          <input value="Submit Story" type="submit" />
+        </form>
+      </section>
     </>
   );
 }
