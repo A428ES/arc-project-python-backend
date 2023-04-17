@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from "react";
 import HTTPRequester from "../../utility/requester";
 import PageTitle from "../../components/page_title";
-import { EditorState, convertToRaw } from "draft-js";
+import {
+  EditorState,
+  convertToRaw,
+  ContentState,
+  convertFromHTML,
+} from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { useNavigate } from "react-router";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function AddSubmission() {
-  const [storyContent, setStory] = useState([]);
-  const [storyTitle, setTitle] = useState([]);
+  const navigate = useNavigate();
+  const [storyContent, setStory] = useState("");
+  const [storyTitle, setTitle] = useState("Enter Your Title Here");
   const [proceessFeed, setFeed] = useState([""]);
   const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [editorState, setEditorState] = useState(
+    EditorState.createWithContent(
+      ContentState.createFromBlockArray(
+        convertFromHTML("<h3>Enter your story here</h3>")
+      )
+    )
+  );
 
   const onChange = (newState) => {
     setEditorState(newState);
@@ -21,7 +36,16 @@ export default function AddSubmission() {
 
   useEffect(() => {
     if (dataFeed !== null && errorFeed === null) {
-      setFeed(<>Your story was submitted successful!</>);
+      confirmAlert({
+        title: "Submitted Successfully",
+        message: "Click Okay to view your submissions",
+        buttons: [
+          {
+            label: "Okay",
+            onClick: () => navigate("/mysubmissions"),
+          },
+        ],
+      });
     } else if (errorFeed !== null) {
       setFeed(errorFeed);
     }
@@ -42,18 +66,20 @@ export default function AddSubmission() {
       <section>
         <form onSubmit={handleSubmit}>
           <label>
-            Title
-            <br />
             <input
               type="text"
               name="title"
+              size="30"
+              value={storyTitle}
+              onClick={(e) =>
+                e.target.value === "Enter Your Title Here" ? setTitle("") : ""
+              }
               onChange={(e) => setTitle(e.target.value)}
             />
           </label>
           <br />
           <br />
           <label>
-            Content
             <br />
             <Editor
               editorState={editorState}

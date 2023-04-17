@@ -2,8 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 import HTTPRequester from "../../utility/requester";
 import PageTitle from "../../components/page_title";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { useNavigate } from "react-router";
 
 export default function RegisterAccount() {
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState([]);
   const [lastName, setLastName] = useState([]);
   const [password, setPassword] = useState([]);
@@ -15,7 +19,16 @@ export default function RegisterAccount() {
 
   useEffect(() => {
     if (dataFeed !== null && errorFeed === null) {
-      setFeed(<>Your registration was successful!</>);
+      confirmAlert({
+        title: "Registration Successful",
+        message: "Click Okay to redirect to login page",
+        buttons: [
+          {
+            label: "Okay",
+            onClick: () => navigate("/login"),
+          },
+        ],
+      });
     } else if (errorFeed !== null) {
       setFeed(errorFeed);
     }

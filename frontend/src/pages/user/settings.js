@@ -10,6 +10,7 @@ export default function MySettings() {
       <PageTitle text="Account Settings" />
       <section>
         <p>
+          <h3>Your Information</h3>
           First Name:{" "}
           <input
             type="text"
@@ -30,18 +31,21 @@ export default function MySettings() {
             size="30"
             disabled="true"
           />
-          <br />
+        </p>
+        <p>
+          <h3>Change Password</h3>
           Current Password:
-          <input type="text" /> New Password: <input type="text" /> Confirm New
-          Password: <input type="text" />
+          <input type="text" />
+          <br /> New Password: <input type="text" /> Confirm New Password:{" "}
+          <input type="text" />
           <br />
-          <br />
-          <br />
-          <h3>
-            Stories Posted: 0<br />
-            Comments Posted: 0<br />
-            Member Since: {authState.userData.created}
-          </h3>
+          <input type="button" value="Change my password" />
+        </p>
+        <p>
+          <h3>Account Stats</h3>
+          Stories Posted: 0<br />
+          Comments Posted: 0<br />
+          Member Since: {authState.userData.created}
         </p>
         <br />
       </section>
