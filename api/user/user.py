@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, create_access_token, current_user
 from api.utility.user_login import User
 from api.app import db
 from api.utility.form_validator import FormValidator
+import bcrypt
 
 user_route = Blueprint("user", __name__)
 
@@ -29,6 +30,9 @@ def user_register():
     }
 
     new_validation = FormValidator(request_args, db.new_user_account()).validate_form()
+    new_validation["password"] = bcrypt.hashpw(
+        new_validation["password"].encode("utf-8"), bcrypt.gensalt()
+    )
 
     find_insert = db.insert_record("users", new_validation)
 
@@ -51,7 +55,9 @@ def user_login_view():
 
     print(locate_user)
     if locate_user != None:
-        if processed_request["password"] == locate_user["password"]:
+        if bcrypt.checkpw(
+            processed_request["password"].encode("utf-8"), locate_user["password"]
+        ):
             access_token = create_access_token(identity=locate_user["email"])
 
             return {

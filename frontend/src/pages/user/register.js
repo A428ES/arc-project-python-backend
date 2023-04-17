@@ -32,7 +32,7 @@ export default function RegisterAccount() {
     } else if (errorFeed !== null) {
       setFeed(errorFeed);
     }
-  }, [dataFeed]);
+  }, [dataFeed, errorFeed]);
 
   let handleSubmit = (event) => {
     loginRequest();

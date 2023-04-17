@@ -9,7 +9,6 @@ import {
 } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useNavigate } from "react-router";
 import { confirmAlert } from "react-confirm-alert";
@@ -49,20 +48,25 @@ export default function AddSubmission() {
     } else if (errorFeed !== null) {
       setFeed(errorFeed);
     }
-  }, [dataFeed]);
+  }, [dataFeed, errorFeed]);
 
   let handleSubmit = (event) => {
-    getData("stories/submit", "POST", {
-      title: storyTitle,
-      story: storyContent,
-    });
+    if (storyTitle !== "Enter Your Title Here") {
+      getData("stories/submit", "POST", {
+        title: storyTitle,
+        story: storyContent,
+      });
+    } else {
+      setTitle("");
+    }
+
     event.preventDefault();
   };
 
   return (
     <>
       <PageTitle text="Submit New Story" />
-      <div className="loginError">{proceessFeed}</div>{" "}
+      <div className="loginError">{proceessFeed}</div>
       <section>
         <form onSubmit={handleSubmit}>
           <label>
@@ -72,7 +76,9 @@ export default function AddSubmission() {
               size="30"
               value={storyTitle}
               onClick={(e) =>
-                e.target.value === "Enter Your Title Here" ? setTitle("") : ""
+                e.target.value === "Enter Your Title Here"
+                  ? setTitle("")
+                  : setTitle(e.target.value)
               }
               onChange={(e) => setTitle(e.target.value)}
             />
