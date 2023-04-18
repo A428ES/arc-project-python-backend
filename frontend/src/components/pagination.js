@@ -14,7 +14,6 @@ const MyPaginate = styled(ReactPaginate).attrs({
   li a {
     border-radius: 7px;
     padding: 0.1rem 1rem;
-    border: gray 1px solid;
     cursor: pointer;
   }
   li.previous a,
@@ -23,9 +22,9 @@ const MyPaginate = styled(ReactPaginate).attrs({
     border-color: transparent;
   }
   li.active a {
-    background-color: #0366d6;
+    background-color: #fffac4;
     border-color: transparent;
-    color: white;
+    color: black;
     min-width: 32px;
   }
   li.disabled a {
