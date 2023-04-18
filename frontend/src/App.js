@@ -13,6 +13,7 @@ import RegisterAccount from "./pages/user/register";
 import CommentDisplay from "./components/comment_display";
 import HTTPRequester from "./utility/requester";
 import StoryViewer from "./components/story_viewer";
+import SearchPage from "./pages/user/search";
 
 function App() {
   const [authState, setAuthState] = useContext(AuthContext);
@@ -50,10 +51,7 @@ function App() {
                   <Route path="/login" element={<UserLogin />} />
                   <Route path="/viewcomments" element={<CommentDisplay />} />
                   <Route path="/register" element={<RegisterAccount />}></Route>
-                  <Route
-                    path="/search"
-                    element={<StoryViewer author="stories/search" />}
-                  />
+                  <Route path="/search" element={<SearchPage />} />
                   <Route
                     path="/addsubmission"
                     element={
