@@ -66,8 +66,9 @@ export default function AddSubmission() {
   return (
     <>
       <PageTitle text="Submit New Story" />
-      <div className="loginError">{proceessFeed}</div>
       <section>
+        <div className="loginError">{proceessFeed}</div>
+        <br />
         <form onSubmit={handleSubmit}>
           <label>
             <input

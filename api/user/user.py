@@ -53,7 +53,6 @@ def user_login_view():
 
     locate_user = db.find_record("users", {"email": processed_request["email"]})
 
-    print(locate_user)
     if locate_user != None:
         if bcrypt.checkpw(
             processed_request["password"].encode("utf-8"), locate_user["password"]
@@ -72,6 +71,29 @@ def user_login_view():
             }
 
     raise Exception("invalid login attempt")
+
+
+@user_route.route("/user/changepw", methods=["POST"])
+@jwt_required()
+def change_password():
+    processed_request = request.get_json()
+
+    # processed_request = FormValidator(req, db.change_pw()).validate_form()
+
+    locate_user = db.find_record("users", {"email": current_user["email"]})
+
+    if bcrypt.checkpw(
+        processed_request["old_password"].encode("utf-8"), current_user["password"]
+    ):
+        locate_user["password"] = bcrypt.hashpw(
+            processed_request["new_password"].encode("utf-8"), bcrypt.gensalt()
+        )
+
+        action = db.update_record("users", locate_user)
+
+        return {"results": "complete"}
+
+    raise Exception("no bueno")
 
 
 @user_route.route("/user/logout", methods=["GET"])

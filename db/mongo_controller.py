@@ -49,9 +49,9 @@ class MongoController(MongoSchemas):
             return None
 
         if delete_record == True:
-            find_rec["is_deleted"] = True
+            db_entry["is_deleted"] = True
 
-        self.collection.replace_one({"uuid": db_entry["uuid"]}, find_rec)
+        self.collection.replace_one({"uuid": db_entry["uuid"]}, db_entry)
 
         return self.find_record(target, {"uuid": db_entry["uuid"]})
 
