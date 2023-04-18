@@ -413,6 +413,11 @@ a.nav:hover {
   letter-spacing: 5px;
 }
 
+.centercontent{
+  margin: auto;
+  text-align: center;
+}
+
 
 .articleHeader{
 	background-color: #e6e8e3;
