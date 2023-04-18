@@ -34,6 +34,9 @@ export default function NavigationBar() {
             <a className="nav" href="" onClick={() => handleLogout()}>
               Logout
             </a>
+            <a className="nav" href="/search">
+              Search
+            </a>
           </>
         ) : (
           <>
@@ -47,12 +50,11 @@ export default function NavigationBar() {
             <a className="nav" href="/login">
               Login
             </a>
+            <a className="nav" href="/search">
+              Search
+            </a>
           </>
         )}
-        <br />
-        <br />
-        <input type="text" size="30" className="searchbar" />
-        <input type="submit" value="Search" />
       </div>
     </>
   );
