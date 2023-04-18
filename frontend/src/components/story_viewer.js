@@ -36,9 +36,7 @@ export default function StoryViewer(prop) {
   useEffect(() => {
     if (dataFeed === null) {
       if (prop.author === "stories/search") {
-        const queryParameters = new URLSearchParams(window.location.search);
-        const search_value = queryParameters.get("search");
-        getData(prop.author, "POST", { search: search_value });
+        getData(prop.author, "POST", { search: prop.search_string });
       } else {
         getData(prop.author);
       }
