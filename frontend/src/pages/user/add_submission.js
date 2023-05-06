@@ -1,68 +1,105 @@
 import React, { useState, useEffect } from "react";
 import HTTPRequester from "../../utility/requester";
 import PageTitle from "../../components/page_title";
-import TextareaAutosize from "react-textarea-autosize";
+import {
+  EditorState,
+  convertToRaw,
+  ContentState,
+  convertFromHTML,
+} from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { useNavigate } from "react-router";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function AddSubmission() {
-  const [storyContent, setStory] = useState([]);
-  const [storyTitle, setTitle] = useState([]);
+  const navigate = useNavigate();
+  const [storyContent, setStory] = useState("");
+  const [storyTitle, setTitle] = useState("Enter Your Title Here");
   const [proceessFeed, setFeed] = useState([""]);
   const { dataFeed, errorFeed, submitRequest: getData } = HTTPRequester();
+  const [editorState, setEditorState] = useState(
+    EditorState.createWithContent(
+      ContentState.createFromBlockArray(
+        convertFromHTML("<h3>Enter your story here</h3>")
+      )
+    )
+  );
+
+  const onChange = (newState) => {
+    setEditorState(newState);
+    setStory(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+  };
 
   useEffect(() => {
     if (dataFeed !== null && errorFeed === null) {
-      setFeed(<>Your story was submitted successful!</>);
+      confirmAlert({
+        title: "Submitted Successfully",
+        message: "Click Okay to view your submissions",
+        buttons: [
+          {
+            label: "Okay",
+            onClick: () => navigate("/mysubmissions"),
+          },
+        ],
+      });
     } else if (errorFeed !== null) {
       setFeed(errorFeed);
     }
-  }, [dataFeed]);
+  }, [dataFeed, errorFeed]);
 
   let handleSubmit = (event) => {
-    getData("stories/submit", "POST", {
-      title: storyTitle,
-      story: storyContent,
-    });
+    if (storyTitle !== "Enter Your Title Here") {
+      getData("stories/submit", "POST", {
+        title: storyTitle,
+        story: storyContent,
+      });
+    } else {
+      setTitle("");
+    }
+
     event.preventDefault();
   };
 
   return (
     <>
       <PageTitle text="Submit New Story" />
-      <div className="loginError">{proceessFeed}</div>{" "}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Title
+      <section>
+        <div className="loginError">{proceessFeed}</div>
+        <br />
+        <form onSubmit={handleSubmit}>
+          <label>
+            <input
+              type="text"
+              name="title"
+              size="30"
+              value={storyTitle}
+              onClick={(e) =>
+                e.target.value === "Enter Your Title Here"
+                  ? setTitle("")
+                  : setTitle(e.target.value)
+              }
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </label>
           <br />
-          <input
-            type="text"
-            name="title"
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </label>
-        <br />
-        <br />
-        <label>
-          Content
           <br />
-          <TextareaAutosize
-            minRows={15}
-            maxRows={25}
-            cols={60}
-            minCols="20"
-            autoFocus
-          />
-          {/* <textarea
-            style="overflow: hidden;"
-            name="story_content"
-            lol
-            cols="100"
-            rows="20"
-            onChange={(e) => setStory(e.target.value)}
-          ></textarea> */}
-        </label>
-        <br />
-        <input value="Submit Story" type="submit" />
-      </form>
+          <label>
+            <br />
+            <Editor
+              editorState={editorState}
+              toolbarClassName="toolbarClassName"
+              wrapperClassName="wrapperClassName"
+              editorClassName="editorClassName"
+              onEditorStateChange={onChange}
+            />
+          </label>
+          <br />
+          <input value="Submit Story" type="submit" />
+        </form>
+      </section>
     </>
   );
 }

@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, create_access_token, current_user
 from api.utility.user_login import User
 from api.app import db
 from api.utility.form_validator import FormValidator
+import bcrypt
 
 user_route = Blueprint("user", __name__)
 
@@ -29,6 +30,9 @@ def user_register():
     }
 
     new_validation = FormValidator(request_args, db.new_user_account()).validate_form()
+    new_validation["password"] = bcrypt.hashpw(
+        new_validation["password"].encode("utf-8"), bcrypt.gensalt()
+    )
 
     find_insert = db.insert_record("users", new_validation)
 
@@ -49,9 +53,10 @@ def user_login_view():
 
     locate_user = db.find_record("users", {"email": processed_request["email"]})
 
-    print(locate_user)
     if locate_user != None:
-        if processed_request["password"] == locate_user["password"]:
+        if bcrypt.checkpw(
+            processed_request["password"].encode("utf-8"), locate_user["password"]
+        ):
             access_token = create_access_token(identity=locate_user["email"])
 
             return {
@@ -66,6 +71,29 @@ def user_login_view():
             }
 
     raise Exception("invalid login attempt")
+
+
+@user_route.route("/user/changepw", methods=["POST"])
+@jwt_required()
+def change_password():
+    processed_request = request.get_json()
+
+    # processed_request = FormValidator(req, db.change_pw()).validate_form()
+
+    locate_user = db.find_record("users", {"email": current_user["email"]})
+
+    if bcrypt.checkpw(
+        processed_request["old_password"].encode("utf-8"), current_user["password"]
+    ):
+        locate_user["password"] = bcrypt.hashpw(
+            processed_request["new_password"].encode("utf-8"), bcrypt.gensalt()
+        )
+
+        action = db.update_record("users", locate_user)
+
+        return {"results": "complete"}
+
+    raise Exception("no bueno")
 
 
 @user_route.route("/user/logout", methods=["GET"])

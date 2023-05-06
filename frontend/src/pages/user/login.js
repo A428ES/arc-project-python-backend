@@ -36,29 +36,31 @@ export default function UserLogin() {
       ) : (
         <>
           <PageTitle text="Login" />
-          <div class="content">
-            <div class="loginError">{errorFeed}</div>
-            <form onSubmit={handleSubmit}>
-              <label>
-                Email:{" "}
-                <input
-                  type="text"
-                  name="email"
-                  onChange={(e) => setUser(e.target.value)}
-                />
-              </label>
+          <section>
+            <div class="content">
+              <div class="loginError">{errorFeed}</div>
+              <form onSubmit={handleSubmit}>
+                <label>
+                  Email:{" "}
+                  <input
+                    type="text"
+                    name="email"
+                    onChange={(e) => setUser(e.target.value)}
+                  />
+                </label>
 
-              <label>
-                Password:{" "}
-                <input
-                  type="password"
-                  name="password"
-                  onChange={(e) => setPass(e.target.value)}
-                />
-              </label>
-              <input value="Login" type="submit" />
-            </form>
-          </div>
+                <label>
+                  Password:{" "}
+                  <input
+                    type="password"
+                    name="password"
+                    onChange={(e) => setPass(e.target.value)}
+                  />
+                </label>
+                <input value="Login" type="submit" />
+              </form>
+            </div>
+          </section>
         </>
       )}
     </>

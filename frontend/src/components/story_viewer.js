@@ -3,6 +3,31 @@ import { useState } from "react";
 import CommentDropDown from "./comment_drop_down";
 import HTTPRequester from "../utility/requester";
 import PageTitle from "./page_title";
+import ReactHtmlParser from "react-html-parser";
+import PaginatedItems from "./pagination";
+
+function MarkupBuilder(props) {
+  return (
+    <>
+      {props.submissions
+        ? props.submissions.map((item) => (
+            <>
+              <section>
+                {" "}
+                <header className="articleHeader" id="p1">
+                  <b>{item.title}</b> by {item.author} on {item.date}
+                </header>
+                <p class="article">
+                  <div>{ReactHtmlParser(item.story)}</div>
+                </p>
+                <CommentDropDown storyID={item.uuid} />
+              </section>
+            </>
+          ))
+        : "No results"}
+    </>
+  );
+}
 
 export default function StoryViewer(prop) {
   const [submissions, setSubmissions] = useState("Loading stories...");
@@ -10,7 +35,11 @@ export default function StoryViewer(prop) {
 
   useEffect(() => {
     if (dataFeed === null) {
-      getData(prop.author);
+      if (prop.author === "stories/search") {
+        getData(prop.author, "POST", { search: prop.search_string });
+      } else {
+        getData(prop.author);
+      }
     } else {
       setSubmissions(dataFeed);
     }
@@ -20,20 +49,15 @@ export default function StoryViewer(prop) {
     <>
       <PageTitle text="Viewing Stories" />
       <section>
-        {submissions && submissions.results
-          ? submissions.results.map((item) => (
-              <>
-                <section>
-                  {" "}
-                  <header className="articleHeader" id="p1">
-                    {item.title} by {item.author} on {item.date}
-                  </header>
-                  <p class="article">{item.story}</p>
-                  <CommentDropDown storyID={item.uuid} />
-                </section>
-              </>
-            ))
-          : "No results"}
+        {submissions && submissions.results ? (
+          <PaginatedItems
+            items={submissions.results}
+            ComponentCall={MarkupBuilder}
+            itemsPerPage={2}
+          />
+        ) : (
+          "No results"
+        )}
       </section>
     </>
   );

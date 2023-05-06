@@ -12,6 +12,16 @@ def handle_general_exception(e):
     return {"error": str(e)}, 400
 
 
+@stories_route.route("/stories/search", methods=["POST"])
+def search_stories():
+    db.set_collection("stories")
+    results = db.collection.find({"$text": {"$search": request.get_json()["search"]}})
+
+    results = [db.get_story_for_frontend(item) for item in results]
+
+    return {"results": [item for item in results if len(item) > 1]}
+
+
 @stories_route.route("/", methods=["POST"])
 def main_page():
     story_results = [

@@ -8,7 +8,6 @@ comment_route = Blueprint("comment", __name__)
 
 @comment_route.errorhandler(Exception)
 def handle_general_exception(e):
-    raise
     return {"error": str(e)}, 400
 
 

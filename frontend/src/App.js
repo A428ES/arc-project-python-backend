@@ -13,6 +13,7 @@ import RegisterAccount from "./pages/user/register";
 import CommentDisplay from "./components/comment_display";
 import HTTPRequester from "./utility/requester";
 import StoryViewer from "./components/story_viewer";
+import SearchPage from "./pages/user/search";
 
 function App() {
   const [authState, setAuthState] = useContext(AuthContext);
@@ -39,63 +40,67 @@ function App() {
 
   return (
     <>
-    {processingLoad === false ? 
-    <>
-      <NavigationBar />
-      <article>
-        <p class="content">
-          <Router>
-            <Routes>
-              <Route path="/" element={<StoryViewer author="" />} />
-              <Route path="/login" element={<UserLogin />} />
-              <Route path="/viewcomments" element={<CommentDisplay />} />
-              <Route path="/register" element={<RegisterAccount />}></Route>
-              <Route
-                path="/addsubmission"
-                element={
-                  <Protected isLoggedIn={authState.userLoggedIn}>
-                    <AddSubmission />
-                  </Protected>
-                }
-              />
-              <Route
-                path="/addcomment"
-                element={
-                  <Protected isLoggedIn={authState.userLoggedIn}>
-                    <AddComment />
-                  </Protected>
-                }
-              />
+      {processingLoad === false ? (
+        <>
+          <NavigationBar />
+          <article>
+            <p class="content">
+              <Router>
+                <Routes>
+                  <Route path="/" element={<StoryViewer author="" />} />
+                  <Route path="/login" element={<UserLogin />} />
+                  <Route path="/viewcomments" element={<CommentDisplay />} />
+                  <Route path="/register" element={<RegisterAccount />}></Route>
+                  <Route path="/search" element={<SearchPage />} />
+                  <Route
+                    path="/addsubmission"
+                    element={
+                      <Protected isLoggedIn={authState.userLoggedIn}>
+                        <AddSubmission />
+                      </Protected>
+                    }
+                  />
+                  <Route
+                    path="/addcomment"
+                    element={
+                      <Protected isLoggedIn={authState.userLoggedIn}>
+                        <AddComment />
+                      </Protected>
+                    }
+                  />
 
-              <Route
-                path="/mysettings"
-                element={
-                  <Protected isLoggedIn={authState.userLoggedIn}>
-                    <MySettings />
-                  </Protected>
-                }
-              />
-              <Route
-                path="/mysubmissions"
-                element={
-                  <Protected isLoggedIn={authState.userLoggedIn}>
-                    <StoryViewer author="stories/mystories" />
-                  </Protected>
-                }
-              />
-              <Route
-                path="/mycomments"
-                element={
-                  <Protected isLoggedIn={authState.userLoggedIn}>
-                    <MyComments />
-                  </Protected>
-                }
-              />
-            </Routes>
-          </Router>{" "}
-        </p>
-      </article>
-      </> : "" }
+                  <Route
+                    path="/mysettings"
+                    element={
+                      <Protected isLoggedIn={authState.userLoggedIn}>
+                        <MySettings />
+                      </Protected>
+                    }
+                  />
+                  <Route
+                    path="/mysubmissions"
+                    element={
+                      <Protected isLoggedIn={authState.userLoggedIn}>
+                        <StoryViewer author="stories/mystories" />
+                      </Protected>
+                    }
+                  />
+                  <Route
+                    path="/mycomments"
+                    element={
+                      <Protected isLoggedIn={authState.userLoggedIn}>
+                        <MyComments />
+                      </Protected>
+                    }
+                  />
+                </Routes>
+              </Router>{" "}
+            </p>
+          </article>
+        </>
+      ) : (
+        ""
+      )}
     </>
   );
 }

@@ -8,4 +8,4 @@ class Config:
         "uuid": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
     }
 
-    remove_characters = [">", "<", '"', "'", ":", ";", "*"]
+    remove_characters = []
