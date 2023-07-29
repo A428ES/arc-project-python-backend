@@ -66,4 +66,6 @@ def my_stories():
         "stories", {"author_uuid": current_user["uuid"]}, first=False
     )
 
-    return {"results": [db.get_story_for_frontend(story) for story in stories]}
+    stories = [db.get_story_for_frontend(story) for story in stories]
+    stories.reverse()
+    return {"results": stories}
