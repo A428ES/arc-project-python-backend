@@ -68,8 +68,8 @@ def user_login_view():
                     "lastname": locate_user["last_name"],
                     "created": locate_user["created_timestamp_ms"],
                     "uuid": locate_user["uuid"],
-                    "story_count": len(db.find_record("stories", {"uuid":locate_user['uuid']})),
-                    "comment_count": len(db.find_record("comments", {"uuid":locate_user['uuid']}))
+                    "story_count": len(db.find_record("stories", {"author_uuid":locate_user['uuid']})),
+                    "comment_count": len(db.find_record("comments", {"author_uuid":locate_user['uuid']}))
                 }
             }
 
