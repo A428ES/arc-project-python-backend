@@ -72,24 +72,19 @@ def user_login_view():
 @user_route.route("/user/changepw", methods=["POST"])
 @jwt_required()
 def change_password():
-    processed_request = request.get_json()
+    incoming = request.get_json()
+    user = db.find_record("users", {"email": current_user["email"]})
 
-    # processed_request = FormValidator(req, db.change_pw()).validate_form()
+    if not bcrypt.checkpw(incoming["old_password"].encode("utf-8"), current_user["password"]):
+        raise Exception("Old password incorrect")
 
-    locate_user = db.find_record("users", {"email": current_user["email"]})
+    user["password"] = bcrypt.hashpw(incoming["new_password"].encode("utf-8"), bcrypt.gensalt())
 
-    if bcrypt.checkpw(
-        processed_request["old_password"].encode("utf-8"), current_user["password"]
-    ):
-        locate_user["password"] = bcrypt.hashpw(
-            processed_request["new_password"].encode("utf-8"), bcrypt.gensalt()
-        )
+    db.update_record("users", user)
 
-        action = db.update_record("users", locate_user)
+    return {"results": "complete"}
 
-        return {"results": "complete"}
 
-    raise Exception("no bueno")
 
 
 @user_route.route("/user/logout", methods=["GET"])
