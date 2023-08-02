@@ -61,7 +61,8 @@ def user_login_view():
         ):
             access_token = create_access_token(identity=locate_user["email"])
 
-            user_response = UserSupport(db, locate_user).update({'access':access_token})
+            user_response = UserSupport(db, locate_user).get_user_data()
+            user_response['results'].update({'access':access_token})
 
             return user_response
 
@@ -99,4 +100,4 @@ def user_logout():
 @user_route.route("/user/check_logged_in", methods=["GET"])
 @jwt_required()
 def check_logged_in():
-    return UserSupport(db, current_user)
+    return UserSupport(db, current_user).get_user_data()
