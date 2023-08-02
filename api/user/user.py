@@ -1,11 +1,9 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, create_access_token, current_user
-from api.utility.user_login import User
 from api.app import db
 from api.utility.form_validator import FormValidator
-import bcrypt
-from datetime import datetime
 from api.user.user_support import UserSupport
+import bcrypt
 
 user_route = Blueprint("user", __name__)
 
@@ -22,51 +20,44 @@ def main_user():
 
 @user_route.route("/user/register", methods=["POST"])
 def user_register():
-    req = request.get_json()
-
     request_args = {
-        "first_name": req["firstname"],
-        "last_name": req["lastname"],
-        "email": req["email"],
-        "password": req["password"],
+        "first_name": request.get_json()["firstname"],
+        "last_name": request.get_json()["lastname"],
+        "email": request.get_json()["email"],
+        "password": request.get_json()["password"],
     }
 
-    new_validation = FormValidator(request_args, db.new_user_account()).validate_form()
-    new_validation["password"] = bcrypt.hashpw(
-        new_validation["password"].encode("utf-8"), bcrypt.gensalt()
-    )
+    incoming = FormValidator(request_args, db.new_user_account()).validate_form()
+    incoming["password"] = bcrypt.hashpw(incoming["password"].encode("utf-8"), bcrypt.gensalt())
 
-    find_insert = db.insert_record("users", new_validation)
-
-    if find_insert != None:
-        return {"results": "true"}
-
-    raise Exception("An unknown error occured during registration")
-
+    if db.insert_record("users", incoming) == None:
+        raise Exception("An unknown error occured during registration")
+    
+    return {"results": "true"}
 
 @user_route.route("/user/login", methods=["GET"])
 def user_login_view():
-    request_args = {
+    get_args = {
         "email": request.args.get("email"),
         "password": request.args.get("password"),
     }
 
-    processed_request = FormValidator(request_args, db.new_login()).validate_form()
+    incoming = FormValidator(get_args, db.new_login()).validate_form()
+    user = db.find_record("users", {"email": incoming["email"]})
 
-    locate_user = db.find_record("users", {"email": processed_request["email"]})
+    if user == None:
+        raise Exception("Invalid user")
+    
 
-    if locate_user != None:
-        if bcrypt.checkpw(
-            processed_request["password"].encode("utf-8"), locate_user["password"]
-        ):
-            access_token = create_access_token(identity=locate_user["email"])
+    if not bcrypt.checkpw(incoming["password"].encode("utf-8"), user["password"]):
+        raise Exception("Invalid password")
+    
+    access_token = create_access_token(identity=user["email"])
+    user_response = UserSupport(db, user).get_user_data()
 
-            user_response = UserSupport(db, locate_user).get_user_data()
-            user_response['results'].update({'access':access_token})
+    user_response['results'].update({'access':access_token})
 
-            return user_response
-
-    raise Exception("invalid login attempt")
+    return user_response
 
 
 @user_route.route("/user/changepw", methods=["POST"])
@@ -83,8 +74,6 @@ def change_password():
     db.update_record("users", user)
 
     return {"results": "complete"}
-
-
 
 
 @user_route.route("/user/logout", methods=["GET"])
