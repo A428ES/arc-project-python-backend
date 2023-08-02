@@ -5,6 +5,7 @@ from api.app import db
 from api.utility.form_validator import FormValidator
 import bcrypt
 from datetime import datetime
+from api.user.user_support import UserSupport
 
 user_route = Blueprint("user", __name__)
 
