@@ -107,7 +107,7 @@ export default function MySettings() {
         <p>
           <h3>Account Stats</h3>
           Stories Posted: {authState.userData.story_count}<br />
-          Comments Posted: {authState.userData.story_count}<br />
+          Comments Posted: {authState.userData.comment_count}<br />
           Member Since: {authState.userData.created}
         </p>
         <br />
