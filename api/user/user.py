@@ -4,6 +4,7 @@ from api.utility.user_login import User
 from api.app import db
 from api.utility.form_validator import FormValidator
 import bcrypt
+from datetime import datetime
 
 user_route = Blueprint("user", __name__)
 
@@ -67,6 +68,7 @@ def user_login_view():
                     "lastname": locate_user["last_name"],
                     "created": locate_user["created_timestamp_ms"],
                     "uuid": locate_user["uuid"],
+                    "story_count": len(db.find_record("stories", {"uuid":locate_user['uuid']}))
                 }
             }
 
