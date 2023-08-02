@@ -61,18 +61,9 @@ def user_login_view():
         ):
             access_token = create_access_token(identity=locate_user["email"])
 
-            return {
-                "results": {
-                    "access": access_token,
-                    "email": locate_user["email"],
-                    "firstname": locate_user["first_name"],
-                    "lastname": locate_user["last_name"],
-                    "created": locate_user["created_timestamp_ms"],
-                    "uuid": locate_user["uuid"],
-                    "story_count": len(db.find_record("stories", {"author_uuid":locate_user['uuid']}, first=False)),
-                    "comment_count": len(db.find_record("comments", {"author_uuid":locate_user['uuid']}, first=False))
-                }
-            }
+            user_response = UserSupport(db, locate_user).update({'access':access_token})
+
+            return user_response
 
     raise Exception("invalid login attempt")
 
@@ -108,14 +99,4 @@ def user_logout():
 @user_route.route("/user/check_logged_in", methods=["GET"])
 @jwt_required()
 def check_logged_in():
-    return {
-        "results": {
-            "email": current_user["email"],
-            "firstname": current_user["first_name"],
-            "lastname": current_user["last_name"],
-            "created": current_user["created_timestamp_ms"],
-            "uuid": current_user["uuid"],
-            "story_count": len(db.find_record("stories", {"author_uuid":current_user['uuid']}, first=False)),
-            "comment_count": len(db.find_record("comments", {"author_uuid":current_user['uuid']}, first=False))
-        }
-    }
+    return UserSupport(db, current_user)
