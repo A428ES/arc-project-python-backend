@@ -8,7 +8,6 @@ stories_route = Blueprint("stories", __name__)
 
 @stories_route.errorhandler(Exception)
 def handle_general_exception(e):
-    raise
     return {"error": str(e)}, 400
 
 
