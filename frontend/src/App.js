@@ -31,7 +31,7 @@ function App() {
       setLoading(false);
     } else {
       if (localStorage.getItem("user_token")) {
-        getData("/user/check_logged_in", "GET");
+        getData("user/check_logged_in", "GET");
       } else {
         setLoading(false);
       }
