@@ -20,7 +20,7 @@ function MarkupBuilder(props) {
                 <p class="article">
                   <div>{ReactHtmlParser(item.story)}</div>
                 </p>
-                <CommentDropDown storyID={item.uuid} />
+                <CommentDropDown key={item.uuid} storyID={item.uuid} />
               </section>
             </>
           ))
