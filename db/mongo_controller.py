@@ -29,7 +29,7 @@ class MongoController(MongoSchemas):
         result = [entry for entry in self.collection.find(query)]
 
         if len(result) < 1:
-            return None
+            return []
 
         return result[0] if first == True else result
 
