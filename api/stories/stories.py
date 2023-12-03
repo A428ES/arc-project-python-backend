@@ -25,8 +25,7 @@ def search_stories():
 def main_page():
     story_results = [
         db.get_story_for_frontend(story)
-        for story in db.find_record("stories", {}, first=False)
-    ]
+        for story in db.find_record("stories", {}, first=False)]
 
     story_results = [story for story in story_results if len(story) > 0]
     story_results.reverse()

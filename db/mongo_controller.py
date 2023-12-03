@@ -25,10 +25,13 @@ class MongoController(MongoSchemas):
     def find_record(self, target, query, first=True):
         self.set_collection(target)
 
-        query.update({"is_deleted": False})
+        query["is_deleted"] = False
         result = [entry for entry in self.collection.find(query)]
+        print(query)
+        print(result)
+        print("buffer")
 
-        if len(result) < 1:
+        if len(result) == 0:
             return []
 
         return result[0] if first == True else result
@@ -60,6 +63,10 @@ class MongoController(MongoSchemas):
 
         author = self.find_record("users", {"uuid": story["author_uuid"]})
 
+        if len(author) == 0:
+            author = {'first_name': "USER DELETED", 'last_name':""}
+
+        print(story)
         if author != None:
             return {
                 "uuid": story["uuid"],
