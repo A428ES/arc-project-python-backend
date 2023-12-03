@@ -53,7 +53,7 @@ export default function StoryViewer(prop) {
           <PaginatedItems
             items={submissions.results}
             ComponentCall={MarkupBuilder}
-            itemsPerPage={2}
+            itemsPerPage={5}
           />
         ) : (
           "No results"
